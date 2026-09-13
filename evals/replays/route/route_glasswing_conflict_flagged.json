@@ -1,0 +1,9 @@
+{
+  "fixture_id": "route_glasswing_conflict_flagged",
+  "task": "route",
+  "fixture_sha": "77252b266cd3be6604aeb883a855ff8b4943fa816a9563182bee00451d7ce32a",
+  "prompt_sha": "b75dce5b276043e4780eeb74c5113e05c0bbe6ad084c36b5d601f551017f9412",
+  "model": "synthetic-seed",
+  "response": "REASONING\n\nThe posting names an internal owner of the function: \"Reporting to our Head of Digital & AI, Corinne\". The leadership page, captured four days later, lists four executives and no Head of Digital & AI, and no seat of that kind. The Apollo sweep has no such title either; the only Corinne — Corinne Delacroix-Hale — is a Regional Director of Operations on a record last refreshed seven months ago. So the company's own live posting says a titled owner sits, and the company's own leadership page and the people sweep say no such seat exists. That is two captured sources genuinely contradicting each other about who holds the seat, and the corroboration test does not dissolve it: a stale operations-director record neither confirms nor rules out a recent move into a digital-and-AI seat. The ICP says never resolve such a conflict by preferring the scarier reading (SKIP) or the cleaner one (QUALIFIED). FLAGGED, with Corinne Delacroix-Hale as the person the conflict turns on.\n\n{\"route\": \"FLAGGED\", \"evidence_names\": [\"Corinne Delacroix-Hale\"], \"rationale\": \"The live posting reports to a 'Head of Digital & AI, Corinne' that neither the leadership page nor the sweep shows; the only Corinne is a stale Regional Director of Operations record, so the sources genuinely contradict each other about the seat.\"}\n",
+  "recorded_at": "2026-09-13T23:24:02.393Z"
+}

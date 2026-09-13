@@ -1,0 +1,68 @@
+# Single source of truth for sequence targeting, caps, and suppression.
+# Nothing else — no skill, no script — may hardcode a sequence id.
+#
+# Model: signals label accounts (config/signal.yaml is the label catalog); sequences
+# subscribe to labels via `binds: {signals: [...], routes?: [...]}` — criteria ANDed,
+# `binds: {}` matches nothing. `routes` is an optional qualifier only; route is triage
+# classification (lib/status-map.ts), never a targeting mechanism of its own.
+#
+# `status` is the ENROLLMENT lifecycle — draft | active | retired — and gates M3 only.
+# The sequence's *send* state in your sequencer is a human's (M4), never inferred from here.
+# An account matching only non-active sequences HOLDs at status:routed and becomes
+# enrollable automatically when a successor activates (no re-triage). `supersedes` links
+# make an activation carry its retirement: if a superseder is active, its targets must all
+# be retired in the same edit (validator-enforced).
+#
+# Resolve one account:  node lib/sequence-resolver.ts <domain>
+# Validate after ANY edit here:  node lib/sequence-resolver.ts --validate
+# Audit enrolled contacts after ANY copy / merge_fields edit:
+#   node lib/sequence-resolver.ts --audit-enrolled
+sequences:
+  # A sequence entry. Copy this block per sequence you run.
+  hiring-signal-v1:
+    id: REPLACE-WITH-APOLLO-SEQUENCE-ID      # 24-hex Apollo sequence id (from the sequence URL)
+    name: "Hiring Signal — Direct v1"        # display name, informational
+    status: draft            # draft | active | retired — gates ENROLLMENT only.
+                             # Flip to active only after the copy is approved and every
+                             # merge field below has a real apollo_field_id.
+    binds: { signals: [hiring-signal] }      # signal.yaml block keys this sequence subscribes to
+  # Example of a successor: enters as draft, supersedes the old one, activation retires it.
+  # hiring-signal-v2:
+  #   id: REPLACE-WITH-APOLLO-SEQUENCE-ID
+  #   name: "Hiring Signal — Direct v2"
+  #   status: draft
+  #   binds: { signals: [hiring-signal] }
+  #   supersedes: [hiring-signal-v1]
+
+enrollment:
+  always_paused: true        # enroll status:"paused", no exceptions — M4 is the only unpause
+  labels: ["gtm-prospect-pipeline"]   # Apollo contact labels applied at enrollment (+ the route)
+  same_company_flag: sequence_same_company_in_same_campaign  # required for a 2nd contact at the
+                                                             # same company, or Apollo silently skips
+  sender: REPLACE-WITH-SENDER-MAILBOX   # the Apollo-linked mailbox contacts are enrolled under
+
+caps:
+  # Read these at run time. Never quote a cap from memory or from a skill file.
+  enrichments_per_run: 20
+  enrollments_per_run: 25
+  waterfall_email_per_run: 10    # Apollo waterfall email lookups (async, variable credit cost)
+  mailbox_daily: 30              # Apollo mailbox sending limit — keep in sync with Apollo's own setting
+  mailbox_hourly: 6
+  mailbox_delay_seconds: 600
+
+suppression:
+  apollo_dnc_list: "Do Not Contact — Unsubscribed"   # Apollo list checked before EVERY enrollment
+  never_enroll: []               # email addresses — opt-outs, forever
+  never_reenroll_domains: []     # accounts with a verified suppression decision
+
+merge_fields:
+  # Contact custom fields that sequence copy renders as {{variables}}. Apollo resolves them
+  # at SEND time, retroactively — adding one to live copy hard-fails every already-enrolled
+  # contact with `snippets_missing`. renders_in_copy:true fields are send-blocking when unset.
+  hiring_signal:
+    apollo_field_id: PENDING-CREATE-IN-APOLLO   # 24-hex contact custom field id; a draft
+                                                # sequence may carry a placeholder, an active
+                                                # one may not (validator-enforced)
+    value: "the title of the job posting that triggered the signal, as posted — title only"
+    signals: ["Hiring Signal"]      # signal NAMES (or aliases) whose sequences render it
+    renders_in_copy: true

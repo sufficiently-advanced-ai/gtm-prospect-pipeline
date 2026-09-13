@@ -1,0 +1,49 @@
+{
+  "created_at": "2026-09-13T23:24:02.401Z",
+  "git_sha": "nogit",
+  "prompt_shas": {
+    "fit-triage": "4c214f8f21cc8f2ece597e75dc263965aea0f1de7a4c1d3e5b8decc097e690ba",
+    "route": "b75dce5b276043e4780eeb74c5113e05c0bbe6ad084c36b5d601f551017f9412",
+    "salesnav-verdict": "3dbef753efe891f448aad32909edebbd45a4fce8aef5683dfac941f50520fe7f",
+    "evidence-synthesis": "76da7d5e39b58c8fd6779d9224dcb415b4b6be348aab09e6e2d4d8363d6fcfd4"
+  },
+  "fixture_shas": {
+    "evidence_synthesis_harborline_open_seat": "cf767fc5b7d279a5e6843fe459b1f98f2bc74b9ce1b985964d342b2d3339ff37",
+    "evidence_synthesis_saltmarsh_scope_read": "b30459ba0fe97c8808613b0ed60fdd55b24226bec8b2d66dd5f36bee2afa8e76",
+    "fit_triage_copperfield_staffing_homepage": "73c3c5af1ef24d79f270103be3957df52078dc7eab255f3b169f6f20cd81bfed",
+    "fit_triage_harborline_operator_keep": "53c5c22a1c7f9d38a57663a673888bf288de0be9319b65324f76e7727c00da6d",
+    "fit_triage_northwind_vendor_drop": "45991d221e8497d29b623aa500ee5d316f4f259028df4d654374993001383f80",
+    "route_glasswing_conflict_flagged": "77252b266cd3be6604aeb883a855ff8b4943fa816a9563182bee00451d7ce32a",
+    "route_harborline_qualified_open_seat": "3f21364eca02d7b4aee478bac286a356254c6378b3adec3ebfda128b574fbf89",
+    "route_meridian_titled_owner_skip": "53bbd50d532cd782fb9b4becee062d3f3e363b3702de95a59839fd03283b1ccd",
+    "route_saltmarsh_scope_not_title": "043b0613db6ad0040686d097ab58cea7ee71d9a3f21b4d1c3a04cde0eafd749b",
+    "salesnav_verdict_harborline_confirm": "82c5b6684ed66d5be49c749a2c9d3fd1ab95844a96f0b5299bfdbe417b3d6fea",
+    "salesnav_verdict_meridian_flip_to_skip": "633f82c69bef9f04413fe5de342d53a4fe3eddad6e6a02e55de645759d5fffdc"
+  },
+  "metrics": {
+    "fit-triage": {
+      "n": 3,
+      "accuracy": 1,
+      "forbidden_hits": 0,
+      "drop_class_correct": 1
+    },
+    "route": {
+      "n": 4,
+      "accuracy": 1,
+      "forbidden_hits": 0,
+      "name_recall": 1
+    },
+    "salesnav-verdict": {
+      "n": 2,
+      "accuracy": 1,
+      "forbidden_hits": 0,
+      "name_recall": 1
+    },
+    "evidence-synthesis": {
+      "n": 2,
+      "must_pass_rate": 1,
+      "should_pass_rate": 1,
+      "citation_violations": 0
+    }
+  }
+}

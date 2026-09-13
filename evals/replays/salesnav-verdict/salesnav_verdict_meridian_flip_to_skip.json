@@ -1,0 +1,9 @@
+{
+  "fixture_id": "salesnav_verdict_meridian_flip_to_skip",
+  "task": "salesnav-verdict",
+  "fixture_sha": "633f82c69bef9f04413fe5de342d53a4fe3eddad6e6a02e55de645759d5fffdc",
+  "prompt_sha": "3dbef753efe891f448aad32909edebbd45a4fce8aef5683dfac941f50520fe7f",
+  "model": "synthetic-seed",
+  "response": "REASONING\n\nThe checklist's absence claim rests on Apollo records refreshed eight months before this pass. The sweep — the source that actually looked — finds Tobias Wrenfield, VP of AI & Data, 8 months in role by the row's tenure figure, with a viewed profile whose About describes owning the AI and data strategy for the company and building the team; a Director of Data Engineering reporting to him arrived five months ago. That is a sitting, titled owner of the function at a rank the ICP counts, confirmed on the person's own profile — scope, not just title string — and it is exactly the recent-arrival case the pass exists to catch. The sweep's positive finding governs over the stale index, and a confirmed disqualifier is binary and account-level. The verdict is flip_to_skip, with Wrenfield as the person it turns on.\n\n{\"verdict\": \"flip_to_skip\", \"evidence_names\": [\"Tobias Wrenfield\"], \"rationale\": \"The sweep found and profile-verified a VP of AI & Data, 8 months in seat, owning the AI and data strategy — a sitting owner the stale Apollo records behind the checklist did not show.\"}\n",
+  "recorded_at": "2026-09-13T23:24:02.395Z"
+}

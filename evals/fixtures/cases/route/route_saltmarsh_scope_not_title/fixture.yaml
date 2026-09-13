@@ -1,0 +1,32 @@
+id: route_saltmarsh_scope_not_title
+task: route
+version: 1
+description: >-
+  Scope over title string. A "Chief Innovation Officer" sits on the roster, and the title
+  reads like the owner of the function. The leadership page and the person's headline
+  describe the remit: vessel retrofit programs and emissions-regulation compliance, no
+  data, no automation, no AI. A C-level title is not a disqualifier until the scope says
+  so. Trap: SKIP on the title string.
+provenance:
+  domain: saltmarsh-marine.example
+  source: "synthetic — shipped with the public repo; replace with your own excerpted decisions"
+inputs:
+  - path: inputs/apollo-sweep.json
+    role: apollo_sweep
+  - path: inputs/firecrawl-leadership.md
+    role: firecrawl_leadership
+  - path: inputs/posting.md
+    role: posting
+gold:
+  route: QUALIFIED
+  evidence_names:
+    - Ingrid Halvorsen-Mbeki
+forbidden:
+  - field: route
+    value: SKIP
+    reason: >-
+      A nonstandard C-level title was treated as the owner of the function without reading
+      the person's scope. The remit is retrofit engineering and regulatory compliance; the
+      title string alone decided it, which is exactly the failure the scope test exists for.
+notes: >-
+  Synthetic fixture. Every company, person and domain is invented.

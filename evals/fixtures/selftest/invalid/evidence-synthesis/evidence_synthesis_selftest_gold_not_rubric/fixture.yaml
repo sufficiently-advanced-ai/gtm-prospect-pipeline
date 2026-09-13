@@ -1,0 +1,12 @@
+id: evidence_synthesis_selftest_gold_not_rubric
+task: evidence-synthesis
+version: 1
+description: carries gold instead of a rubric
+provenance:
+  domain: selftest-bad.invalid
+  source: harness self-test — synthetic
+inputs:
+  - path: inputs/posting.md
+    role: posting
+gold:
+  decision: keep

@@ -1,0 +1,15 @@
+{
+  "metadata": { "total_results": 1 },
+  "data": [
+    {
+      "domain": "selftest-vendor.invalid",
+      "name": "Selftest Vendor Co",
+      "employee_count": 60,
+      "industry": "Logistics",
+      "long_description": "Selftest Vendor Co sells an LLM agent platform that automates back-office workflows for logistics operators.",
+      "jobs_found": [
+        { "job_title": "Solutions Engineer", "date_posted": "2026-01-10", "matching_phrases": ["deploy our agent platform for customers"] }
+      ]
+    }
+  ]
+}

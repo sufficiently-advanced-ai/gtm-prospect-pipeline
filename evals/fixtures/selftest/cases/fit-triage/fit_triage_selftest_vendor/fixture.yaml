@@ -1,0 +1,19 @@
+id: fit_triage_selftest_vendor
+task: fit-triage
+version: 1
+description: >-
+  Self-test: a company whose product IS the capability (an LLM agent platform) must be
+  dropped as a vendor, whatever its industry tag says. Trap: keeping it on the tag.
+provenance:
+  domain: selftest-vendor.invalid
+  source: harness self-test — synthetic
+inputs:
+  - path: inputs/theirstack-company.json
+    role: theirstack_company
+gold:
+  decision: drop
+  drop_class: vendor_of_the_capability
+forbidden:
+  - field: decision
+    value: keep
+    reason: synthetic trap — a vendor of the capability kept on the strength of a stale industry tag

@@ -1,0 +1,13 @@
+id: fit_triage_selftest_bad_class
+task: fit-triage
+version: 1
+description: drop_class is not a slug listed under "## Drop classes"
+provenance:
+  domain: selftest-bad.invalid
+  source: harness self-test — synthetic
+inputs:
+  - path: inputs/theirstack-company.json
+    role: theirstack_company
+gold:
+  decision: drop
+  drop_class: not_a_class

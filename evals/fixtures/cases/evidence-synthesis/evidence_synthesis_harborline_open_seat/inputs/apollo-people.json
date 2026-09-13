@@ -1,0 +1,11 @@
+{
+  "total_entries": 6,
+  "people": [
+    { "name": "Ruth Ashgrove", "title": "Chief Executive Officer", "seniority": "c_suite" },
+    { "name": "Desmond Ferreira-Kole", "title": "Chief Operating Officer", "seniority": "c_suite" },
+    { "name": "Anneliese Brackwater", "title": "Chief Financial Officer", "seniority": "c_suite" },
+    { "name": "Kwame Tannerhill", "title": "VP Operations", "seniority": "vp" },
+    { "name": "Marisol Ferrante", "title": "Director of IT", "seniority": "director" },
+    { "name": "Beatrix Oyelaran", "title": "Director of Safety & Compliance", "seniority": "director" }
+  ]
+}

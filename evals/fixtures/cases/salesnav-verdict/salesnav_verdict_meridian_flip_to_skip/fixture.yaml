@@ -1,0 +1,32 @@
+id: salesnav_verdict_meridian_flip_to_skip
+task: salesnav-verdict
+version: 1
+description: >-
+  A flip to SKIP. The headless Apollo sweep returned a clean roster — no owner of the
+  function — and the checklist carries that absence claim. The Sales Navigator sweep finds
+  a VP of AI & Data who joined eight months ago under a record Apollo had not refreshed,
+  and a profile view confirms the remit (the AI roadmap, forecasting, robotics scheduling).
+  A sitting owner found by the sweep flips the route. Trap: confirming the headless call
+  because the checklist said the roster was clean.
+provenance:
+  domain: meridian-coldstorage.example
+  source: "synthetic — shipped with the public repo; replace with your own excerpted decisions"
+inputs:
+  - path: inputs/salesnav-notes.md
+    role: salesnav
+  - path: inputs/checklist.md
+    role: checklist
+gold:
+  verdict: flip_to_skip
+  evidence_names:
+    - Tobias Wrenfield
+forbidden:
+  - field: verdict
+    value: confirm
+    reason: >-
+      The headless absence claim was confirmed on the strength of the checklist while the
+      sweep itself had found and profile-verified a sitting VP of AI & Data. The pass exists
+      precisely because headless sources miss recent arrivals; the sweep's finding governs.
+notes: >-
+  Synthetic fixture. No apollo_sweep input is staged — the checklist summarizes what the
+  index showed, which is the point: the index was stale.

@@ -1,0 +1,13 @@
+id: fit_triage_selftest_other_id
+task: fit-triage
+version: 1
+description: id does not match its directory, and the input file is missing
+provenance:
+  domain: selftest-bad.invalid
+  source: harness self-test — synthetic
+inputs:
+  - path: inputs/theirstack-company.json
+    role: theirstack_company
+gold:
+  decision: drop
+  drop_class: vendor_of_the_capability

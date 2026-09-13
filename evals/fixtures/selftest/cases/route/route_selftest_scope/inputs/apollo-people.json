@@ -1,0 +1,8 @@
+{
+  "total_entries": 3,
+  "people": [
+    { "name": "Dana Reyes", "title": "Chief Innovation Officer", "headline": "Facilities modernization and regulatory compliance", "seniority": "c_suite", "last_refreshed_at": "2026-01-05T00:00:00Z" },
+    { "name": "Sam Okoye", "title": "Director of Engineering", "seniority": "director", "last_refreshed_at": "2026-01-05T00:00:00Z" },
+    { "name": "Priya Nandan", "title": "VP Operations", "seniority": "vp", "last_refreshed_at": "2026-01-05T00:00:00Z" }
+  ]
+}

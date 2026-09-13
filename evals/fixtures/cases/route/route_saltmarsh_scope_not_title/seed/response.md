@@ -1,0 +1,5 @@
+REASONING
+
+The title that could decide this is Ingrid Halvorsen-Mbeki's "Chief Innovation Officer". The ICP's scope-over-string test says a title alone never disqualifies: read the described remit at this company. Her Apollo headline is fleet retrofit and IMO emissions compliance; the leadership page says the same at length — scrubber and shore-power retrofits, the emissions-compliance program, classification-society relationships, a naval architect by training. Nothing in that remit is data, automation or AI. The posting corroborates the absence: "we do not yet have anyone who owns data or automation", and the new Head of Data & Automation seat reports to the CEO, not to her. The IT Manager is below the ranks that count and runs IT. Sources agree, nothing is thin, no owner of the function sits. QUALIFIED.
+
+{"route": "QUALIFIED", "evidence_names": ["Ingrid Halvorsen-Mbeki"], "rationale": "The Chief Innovation Officer's remit — per her headline and the leadership page — is vessel retrofits and emissions compliance with no data or automation scope, and the posting states nobody owns data or automation today; the title string alone does not disqualify."}

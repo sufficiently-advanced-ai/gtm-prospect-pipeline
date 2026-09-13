@@ -1,0 +1,5 @@
+REASONING
+
+Harborline is an operating company: the homepage is terminals, tractors, trailers and a customer portal for shipments; the source row says LTL and drayage carrier with 240 employees; the posting's About paragraph says "We move freight; we do not build software for sale." Nothing here matches a drop class. The automation-heavy language in the posting is the company wanting to ADOPT the capability — "build our AI and automation roadmap for dispatch, billing and customer service" — which is exactly the signal, not vendor self-description. Headcount sits inside a 10–500 band, it is a direct employer, it is not a job board, not public sector, and the posting plainly belongs to this domain. The ICP's illustrative rule keeps operating companies in any vertical. Keep.
+
+{"decision": "keep", "drop_class": null, "rationale": "A regional freight carrier (terminals, fleet, customer portal) hiring its first operations-technology leader; the posting describes adopting the capability, and the company states it does not build software for sale."}

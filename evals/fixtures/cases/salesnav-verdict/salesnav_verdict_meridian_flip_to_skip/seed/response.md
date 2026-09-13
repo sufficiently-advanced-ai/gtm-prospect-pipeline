@@ -1,0 +1,5 @@
+REASONING
+
+The checklist's absence claim rests on Apollo records refreshed eight months before this pass. The sweep — the source that actually looked — finds Tobias Wrenfield, VP of AI & Data, 8 months in role by the row's tenure figure, with a viewed profile whose About describes owning the AI and data strategy for the company and building the team; a Director of Data Engineering reporting to him arrived five months ago. That is a sitting, titled owner of the function at a rank the ICP counts, confirmed on the person's own profile — scope, not just title string — and it is exactly the recent-arrival case the pass exists to catch. The sweep's positive finding governs over the stale index, and a confirmed disqualifier is binary and account-level. The verdict is flip_to_skip, with Wrenfield as the person it turns on.
+
+{"verdict": "flip_to_skip", "evidence_names": ["Tobias Wrenfield"], "rationale": "The sweep found and profile-verified a VP of AI & Data, 8 months in seat, owning the AI and data strategy — a sitting owner the stale Apollo records behind the checklist did not show."}

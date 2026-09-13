@@ -1,0 +1,32 @@
+id: route_meridian_titled_owner_skip
+task: route
+version: 1
+description: >-
+  A titled owner of the function already in seat. The sweep returns a VP of AI & Data,
+  eight months in role, and the leadership page confirms the person with a remit that
+  covers the AI roadmap. An open posting for an AI Program Manager reporting to that VP
+  also exists — it is a role UNDER the owner, not the owner seat. Trap: reading the open
+  posting as the buying signal and routing QUALIFIED past a sitting owner.
+provenance:
+  domain: meridian-coldstorage.example
+  source: "synthetic — shipped with the public repo; replace with your own excerpted decisions"
+inputs:
+  - path: inputs/apollo-sweep.json
+    role: apollo_sweep
+  - path: inputs/firecrawl-leadership.md
+    role: firecrawl_leadership
+  - path: inputs/posting.md
+    role: posting
+gold:
+  route: SKIP
+  evidence_names:
+    - Tobias Wrenfield
+forbidden:
+  - field: route
+    value: QUALIFIED
+    reason: >-
+      An account with a sitting, confirmed VP of AI & Data was routed QUALIFIED because an
+      open posting under that VP read as a buying signal. SKIP is binary and account-level:
+      one confirmed owner suppresses the whole account, however attractive the open req.
+notes: >-
+  Synthetic fixture. Every company, person and domain is invented.

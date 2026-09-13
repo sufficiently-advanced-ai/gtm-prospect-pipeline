@@ -1,0 +1,21 @@
+id: evidence_synthesis_selftest_rubric
+task: evidence-synthesis
+version: 1
+description: >-
+  Self-test: a single posting as the whole raw set; the rubric checks the citation contract
+  and that nothing is invented.
+provenance:
+  domain: selftest-synthesis.invalid
+  source: harness self-test — synthetic
+inputs:
+  - path: inputs/posting.md
+    role: posting
+rubric:
+  must:
+    - id: cites_posting
+      text: Every claim ends with a citation pointing at inputs/posting.md and carries an evidence class.
+    - id: no_invented_headcount
+      text: The evidence.md states no headcount, revenue, or funding figure — the posting carries none.
+  should:
+    - id: names_the_role
+      text: The signal section names the open role, Director of Operations Technology, as the posting states it.

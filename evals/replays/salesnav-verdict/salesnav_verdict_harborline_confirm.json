@@ -1,0 +1,9 @@
+{
+  "fixture_id": "salesnav_verdict_harborline_confirm",
+  "task": "salesnav-verdict",
+  "fixture_sha": "82c5b6684ed66d5be49c749a2c9d3fd1ab95844a96f0b5299bfdbe417b3d6fea",
+  "prompt_sha": "3dbef753efe891f448aad32909edebbd45a4fce8aef5683dfac941f50520fe7f",
+  "model": "synthetic-seed",
+  "response": "REASONING\n\nThe checklist's priority question is whether the Director of IT's remit extends beyond infrastructure. The sweep answers it with a profile view: Marisol Ferrante's About is network, phones, laptops and TMS integrations, with no data, automation or AI language anywhere — scope, not title, and the scope is infrastructure. The sweep also surfaced Owen Castellane, Senior Manager of Business Systems, whom Apollo had missed; he owns TMS configuration and EDI, reports to the Director of IT, sits below the ranks the ICP counts, and carries no AI or automation scope. Finding a technology person the index lacked corrects the evidence; it does not create an owner of the function. The full 19-row roster carries no CTO, CIO, or AI/automation/data/digital title, tenure figures show no arrival into such a role in 12 months, and the badge on the VP Operations was correctly discounted. The absence claim is confirmed by the sweep, so the verdict is confirm, with Ferrante and Castellane as the people it turned on.\n\n{\"verdict\": \"confirm\", \"evidence_names\": [\"Marisol Ferrante\", \"Owen Castellane\"], \"rationale\": \"The Director of IT's viewed profile is pure infrastructure and the newly surfaced Senior Manager of Business Systems runs the TMS and EDI below the ranks that count; the 19-row roster has no titled owner of the function, so the absence claim stands.\"}\n",
+  "recorded_at": "2026-09-13T23:24:02.395Z"
+}

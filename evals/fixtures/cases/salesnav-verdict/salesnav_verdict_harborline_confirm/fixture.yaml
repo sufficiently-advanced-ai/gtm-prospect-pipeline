@@ -1,0 +1,35 @@
+id: salesnav_verdict_harborline_confirm
+task: salesnav-verdict
+version: 1
+description: >-
+  A confirm. The headless sources found no owner of the function; the Sales Navigator
+  sweep reads the full senior roster (19 rows), finds the same Director of IT plus a
+  Senior Manager of Business Systems the Apollo sweep had missed, and neither owns the
+  function. Newly surfaced tech leadership below the ranks that count, with the wrong
+  scope, is an evidence correction — not a flip. Trap: flipping to SKIP because the sweep
+  found a technology person Apollo lacked.
+provenance:
+  domain: harborline-freight.example
+  source: "synthetic — shipped with the public repo; replace with your own excerpted decisions"
+inputs:
+  - path: inputs/salesnav-notes.md
+    role: salesnav
+  - path: inputs/checklist.md
+    role: checklist
+  - path: inputs/apollo-sweep.json
+    role: apollo_sweep
+gold:
+  verdict: confirm
+  evidence_names:
+    - Marisol Ferrante
+    - Owen Castellane
+forbidden:
+  - field: verdict
+    value: flip_to_skip
+    reason: >-
+      "New tech leader found" was read as "skip". The sweep surfaced a Senior Manager of
+      Business Systems the index had missed; he is below the ranks the ICP counts and his
+      remit is the TMS and EDI, so the absence claim stands and only the evidence changed.
+notes: >-
+  Synthetic fixture. evidence_names are the two people the call could turn on; recall is
+  reported, never gated.

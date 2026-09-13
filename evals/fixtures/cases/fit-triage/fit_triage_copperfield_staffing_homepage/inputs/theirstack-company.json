@@ -1,0 +1,27 @@
+{
+  "metadata": { "total_results": 1, "query": "search_companies — hiring-signal" },
+  "data": [
+    {
+      "domain": "copperfield-talent.example",
+      "name": "Copperfield Talent Partners",
+      "employee_count": 140,
+      "industry": "Industrial Machinery",
+      "is_recruiting_agency": false,
+      "long_description": "Copperfield connects manufacturers across the Midwest with the engineering and automation leaders they need to grow.",
+      "country_code": "US",
+      "jobs_found": [
+        {
+          "job_title": "Director of Automation Engineering",
+          "date_posted": "2026-02-12",
+          "matching_phrases": ["lead the plant's AI-enabled predictive maintenance program"]
+        },
+        {
+          "job_title": "Plant Controller",
+          "date_posted": "2026-02-09",
+          "matching_phrases": []
+        }
+      ]
+    }
+  ],
+  "_excerpt": "company block for copperfield-talent.example only — 31 other companies removed"
+}

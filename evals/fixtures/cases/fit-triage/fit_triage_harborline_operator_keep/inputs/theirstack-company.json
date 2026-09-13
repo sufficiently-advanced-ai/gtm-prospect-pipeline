@@ -1,0 +1,22 @@
+{
+  "metadata": { "total_results": 1, "query": "search_companies — hiring-signal" },
+  "data": [
+    {
+      "domain": "harborline-freight.example",
+      "name": "Harborline Freight",
+      "employee_count": 240,
+      "industry": "Freight & Trucking",
+      "is_recruiting_agency": false,
+      "long_description": "Harborline Freight is a regional LTL and drayage carrier serving the Gulf Coast with four terminals and a fleet of 180 tractors.",
+      "country_code": "US",
+      "jobs_found": [
+        {
+          "job_title": "Head of Operations Technology",
+          "date_posted": "2026-02-10",
+          "matching_phrases": ["build our AI and automation roadmap for dispatch, billing and customer service"]
+        }
+      ]
+    }
+  ],
+  "_excerpt": "company block for harborline-freight.example only — 18 other companies removed"
+}

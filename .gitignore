@@ -1,0 +1,9 @@
+node_modules/
+*.log
+.DS_Store
+# never secrets or pipeline data in this repo
+.env
+*.env
+data/
+# per-run eval reports are local artifacts; the trend line (history.jsonl) is committed
+evals/results/*.json

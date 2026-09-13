@@ -1,0 +1,9 @@
+{
+  "fixture_id": "fit_triage_northwind_vendor_drop",
+  "task": "fit-triage",
+  "fixture_sha": "45991d221e8497d29b623aa500ee5d316f4f259028df4d654374993001383f80",
+  "prompt_sha": "4c214f8f21cc8f2ece597e75dc263965aea0f1de7a4c1d3e5b8decc097e690ba",
+  "model": "synthetic-seed",
+  "response": "REASONING\n\nThe structured row files Northwind under \"Transportation & Logistics\" with a description about helping forwarders \"modernize back-office operations\", and the posting's title reads like an operator seat. But the procedure says structured fields lie and that self-description counts wherever the company writes it. The homepage capture is unambiguous: \"the AI operations platform for freight\", a platform with pricing tiers, integrations and a customer logo wall, deployed at 40+ forwarders. The posting's own About paragraph repeats it: \"We build the AI operations platform freight companies run their back office on.\" The company sells the capability; its customers are the operators. Per the ICP's illustrative rule — a company whose product IS the capability we sell is out — this is the vendor_of_the_capability class. The industry tag describes who it sells to, not what it is.\n\n{\"decision\": \"drop\", \"drop_class\": \"vendor_of_the_capability\", \"rationale\": \"Homepage and the posting's own About paragraph describe an AI operations platform sold to forwarders and 3PLs (pricing, integrations, customer logos); the logistics industry tag names its customers' vertical, not its own business.\"}\n",
+  "recorded_at": "2026-09-13T23:24:02.393Z"
+}

@@ -1,0 +1,52 @@
+id: evidence_synthesis_saltmarsh_scope_read
+task: evidence-synthesis
+version: 1
+description: >-
+  Synthesis where the leadership map must read a C-level title's scope correctly: a
+  "Chief Innovation Officer" whose remit is fleet retrofits and emissions compliance must
+  be mapped as NOT owning data or automation, without being misread as the disqualifier
+  and without being invented into the function. Also stresses thin-raw discipline: three
+  inputs, so the evidence.md must stay short and cite every claim.
+provenance:
+  domain: saltmarsh-marine.example
+  source: "synthetic — shipped with the public repo; replace with your own excerpted decisions"
+inputs:
+  - path: inputs/posting-head-of-data-and-automation.md
+    role: posting
+  - path: inputs/firecrawl-leadership.md
+    role: firecrawl_leadership
+  - path: inputs/firecrawl-press-retrofit-program.md
+    role: firecrawl_press_retrofit_program
+rubric:
+  must:
+    - id: sections_present
+      text: >-
+        The evidence.md carries the five M5 sections — Company, Leadership map, The signal,
+        Posture, Angles — each with at least one substantive claim under it.
+    - id: cio_scope_stated
+      text: >-
+        The leadership map names Ingrid Halvorsen-Mbeki as Chief Innovation Officer AND
+        states her remit as vessel retrofits / emissions compliance (per the leadership page
+        and press item), explicitly noting that this remit does not cover data or automation.
+    - id: signal_is_new_seat
+      text: >-
+        The open Head of Data & Automation posting, reporting to the CEO, is identified as
+        the signal and described as a new seat that no current incumbent holds.
+    - id: no_class_promotion
+      text: >-
+        Spot-check three or more claims against their cited input: no claim is marked with a
+        higher evidence class than its source supports; in particular, any statement about
+        the Chief Innovation Officer's involvement with data or automation is an inference,
+        not a fact.
+  should:
+    - id: retrofit_instance
+      text: >-
+        The Angles ground a specific instance drawn from the press item — the retrofit
+        program's per-vessel scheduling against dry-dock windows — with a failure mode and
+        a measurable pilot metric candidate.
+    - id: thin_flagged_or_short
+      text: >-
+        The document stays proportionate to three inputs: no padding, no claims beyond what
+        the three sources support.
+notes: >-
+  Synthetic fixture. No forbidden trap (rubric task).

@@ -1,0 +1,21 @@
+id: route_selftest_scope
+task: route
+version: 1
+description: >-
+  Self-test: a nonstandard C-level title ("Chief Innovation Officer") whose described scope
+  is facilities and compliance must NOT read as the owner of the function. Scope, not
+  title string. Trap: SKIP on the title alone.
+provenance:
+  domain: selftest-scope.invalid
+  source: harness self-test — synthetic
+inputs:
+  - path: inputs/apollo-people.json
+    role: apollo_sweep
+gold:
+  route: QUALIFIED
+  evidence_names:
+    - Dana Reyes
+forbidden:
+  - field: route
+    value: SKIP
+    reason: synthetic trap — disqualified on a title string without reading the person's scope

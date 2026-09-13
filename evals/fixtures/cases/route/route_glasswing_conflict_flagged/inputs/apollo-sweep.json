@@ -1,0 +1,11 @@
+{
+  "_query": { "tool": "apollo_mixed_people_api_search", "q_organization_domains_list": ["glasswing-dental.example"], "include_similar_titles": false, "per_page": 25 },
+  "total_entries": 5,
+  "people": [
+    { "name": "Aurelio Benavides-Stroud", "title": "Chief Executive Officer", "seniority": "c_suite", "last_refreshed_at": "2026-01-15T00:00:00Z", "organization": { "name": "Glasswing Dental Group", "domain": "glasswing-dental.example" } },
+    { "name": "Corinne Delacroix-Hale", "title": "Regional Director of Operations", "seniority": "director", "last_refreshed_at": "2025-06-30T00:00:00Z", "organization": { "name": "Glasswing Dental Group", "domain": "glasswing-dental.example" } },
+    { "name": "Nadia Ferncastle", "title": "Chief Clinical Officer", "seniority": "c_suite", "last_refreshed_at": "2026-01-15T00:00:00Z", "organization": { "name": "Glasswing Dental Group", "domain": "glasswing-dental.example" } },
+    { "name": "Rowan Isherwood", "title": "VP Finance", "seniority": "vp", "last_refreshed_at": "2025-12-20T00:00:00Z", "organization": { "name": "Glasswing Dental Group", "domain": "glasswing-dental.example" } },
+    { "name": "Felix Amadou-Grange", "title": "Director of IT", "seniority": "director", "last_refreshed_at": "2026-01-15T00:00:00Z", "organization": { "name": "Glasswing Dental Group", "domain": "glasswing-dental.example" } }
+  ]
+}

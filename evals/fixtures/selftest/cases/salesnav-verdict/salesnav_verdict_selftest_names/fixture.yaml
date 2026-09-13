@@ -1,0 +1,19 @@
+id: salesnav_verdict_selftest_names
+task: salesnav-verdict
+version: 1
+description: >-
+  Self-test: the sweep finds two real senior people, neither of whom owns the function, so
+  the verdict is confirm and both are the evidence names.
+provenance:
+  domain: selftest-roster.invalid
+  source: harness self-test — synthetic
+inputs:
+  - path: inputs/salesnav.md
+    role: salesnav
+  - path: inputs/checklist.md
+    role: checklist
+gold:
+  verdict: confirm
+  evidence_names:
+    - Dana Reyes
+    - Sam Okoye

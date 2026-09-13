@@ -1,0 +1,40 @@
+id: route_glasswing_conflict_flagged
+task: route
+version: 1
+description: >-
+  A genuine conflict between captured sources. The live posting says the role reports to
+  "our Head of Digital & AI, Corinne"; the leadership page lists no such person or seat;
+  the Apollo sweep has nobody with that title and one "Corinne" who is a regional
+  operations director. Two sources contradict each other about who holds the seat — FLAGGED
+  is the verdict. Traps: resolving it the scary way (SKIP on the posting's say-so) or the
+  clean way (QUALIFIED because nobody titled appears in the sweep).
+provenance:
+  domain: glasswing-dental.example
+  source: "synthetic — shipped with the public repo; replace with your own excerpted decisions"
+inputs:
+  - path: inputs/apollo-sweep.json
+    role: apollo_sweep
+  - path: inputs/firecrawl-leadership.md
+    role: firecrawl_leadership
+  - path: inputs/posting.md
+    role: posting
+gold:
+  route: FLAGGED
+  evidence_names:
+    - Corinne Delacroix-Hale
+forbidden:
+  - field: route
+    value: SKIP
+    reason: >-
+      A posting's reporting line was taken as proof of a sitting owner no other source
+      shows. Preferring the scarier reading of a conflict is a guess, and FLAGGED exists so
+      that guess is never made.
+  - field: route
+    value: QUALIFIED
+    reason: >-
+      The conflict was resolved the clean way — "nobody with the title in the sweep" — while
+      the company's own live posting names an internal owner. Preferring the cleaner reading
+      is the same guess in the other direction.
+notes: >-
+  Synthetic fixture. Both traps are reachable; the fixture exists to hold the line that a
+  genuine contradiction is a verdict of its own.

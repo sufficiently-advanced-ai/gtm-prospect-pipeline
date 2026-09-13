@@ -1,0 +1,34 @@
+id: fit_triage_northwind_vendor_drop
+task: fit-triage
+version: 1
+description: >-
+  A vendor of the very capability, disguised by its industry tag. The source row files the
+  company under "Transportation & Logistics" (it SELLS to logistics operators) and the
+  posting reads like an operator hiring for automation. The homepage settles it: the
+  company builds and sells an AI workflow-automation platform — a competitor or supplier,
+  not a buyer. Trap: keeping it on the strength of the industry tag and the posting's
+  operator-flavoured language.
+provenance:
+  domain: northwind-automation.example
+  source: "synthetic — shipped with the public repo; replace with your own excerpted decisions"
+inputs:
+  - path: inputs/theirstack-company.json
+    role: theirstack_company
+  - path: inputs/homepage.md
+    role: homepage
+  - path: inputs/posting.md
+    role: jd_text
+gold:
+  decision: drop
+  drop_class: vendor_of_the_capability
+forbidden:
+  - field: decision
+    value: keep
+    reason: >-
+      A company whose PRODUCT is the capability was kept because its stored industry tag
+      named an operating vertical. Structured fields describe who a vendor sells to, not what
+      it is; the homepage read is what settles vendor-vs-operator.
+notes: >-
+  Synthetic fixture. Every company, person and domain is invented; the captures are
+  written in the shape the real connectors produce so the runner exercises the same
+  reading. Replace with a real excerpted decision in a PRIVATE fork (DESIGN.md).

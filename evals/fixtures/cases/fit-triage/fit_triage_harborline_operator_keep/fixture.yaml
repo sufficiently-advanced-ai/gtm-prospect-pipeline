@@ -1,0 +1,32 @@
+id: fit_triage_harborline_operator_keep
+task: fit-triage
+version: 1
+description: >-
+  A clear keep. A regional freight operator inside the size band, in a non-software
+  vertical, hiring a Head of Operations Technology whose posting mentions the capability
+  as something the company wants to adopt — not something it sells. The homepage is
+  trucks, terminals and a customer portal. Trap: dropping it as a vendor because the
+  posting's language is automation-heavy.
+provenance:
+  domain: harborline-freight.example
+  source: "synthetic — shipped with the public repo; replace with your own excerpted decisions"
+inputs:
+  - path: inputs/theirstack-company.json
+    role: theirstack_company
+  - path: inputs/homepage.md
+    role: homepage
+  - path: inputs/posting.md
+    role: jd_text
+gold:
+  decision: keep
+forbidden:
+  - field: decision
+    value: drop
+    reason: >-
+      An operating company was dropped as a vendor because its posting used the vocabulary
+      of the capability. Wanting to adopt the capability is the signal, not a disqualifier;
+      the homepage shows an operator with terminals and a fleet, and nothing for sale but
+      freight.
+notes: >-
+  Synthetic fixture. Every company, person and domain is invented. A keep carries no
+  drop_class.

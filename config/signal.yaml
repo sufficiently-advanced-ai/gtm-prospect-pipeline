@@ -1,0 +1,81 @@
+# Signal definitions = the LABEL CATALOG. One block per signal; the block KEY is the
+# canonical identity (what sequences bind to in config/sequences.yaml) and `name` is the
+# canonical stamp written to account.yaml `signal_source` / the CRM `signalSource` value.
+# M1 loops over every block with `enabled: true`, in file order.
+#
+# A block = the label, PLUS optionally an acquisition recipe (a connector + its query).
+# LABEL-ONLY BLOCKS ARE VALID: a named block with no query and `enabled: false` is how
+# manually-sourced signals (browser research finds, referrals, event lists) enter the
+# catalog — add the block, bind a sequence to its key, no code changes.
+#
+# `aliases:` maps legacy/observed `signal_source` strings in the store and CRM onto the
+# block so nothing has to be rewritten in place. Aliases must be unique across blocks and
+# must not collide with any block's `name` (validator: node lib/sequence-resolver.ts --validate).
+#
+# Anything that is JUDGMENT (what a fit looks like, disqualifiers, false-positive classes)
+# lives in config/icp.md, not here. This file is queries, gates, and limits.
+
+hiring-signal:
+  enabled: true
+  name: "Hiring Signal"
+  aliases: []
+  # --- acquisition recipe: TheirStack job-posting search (blocks without `connector` are TheirStack)
+  endpoint: search_companies          # company-level billing (3 credits/company); search_jobs bills per job
+  job_description_pattern_or:         # TheirStack regex: (?i), \b, groups, alternation work; avoid lookarounds
+    - '(?i)\bREPLACE WITH THE PHRASE YOUR SIGNAL KEYS ON\b'
+  job_title_pattern_not: []           # optional: exclude postings whose TITLE matches (e.g. engineering roles)
+  company_country_code_or: [US]
+  job_country_code_or: [US]
+  min_employee_count: 10
+  max_employee_count: 500
+  posted_at_max_age_days: 30
+  company_type: direct_employer       # drops agencies/recruiters/staffing shops server-side
+  industry_id_not: []                 # TheirStack industry ids to exclude (measure before adding — each
+                                      # id should remove many drops and ~zero kept accounts)
+  company_description_pattern_not: [] # self-description phrases that mark a company out-of-ICP
+  company_keyword_slug_not: []        # job-corpus keyword slugs that mark a company out-of-ICP
+  preflight_free_count: true          # 0-credit pool size check before any billed pull
+  policy:
+    require_salesnav_before_route: false  # true = accounts stop at status:triaged until the browser
+                                          # research pass confirms the routing; M3 refuses non-SALES_NAV
+    push_to_crm_after: routed             # routed | enrolled — when the CRM first sees this signal's accounts
+
+# Second connector example: Apollo company search by open job title. Same downstream
+# (pull-guard, stub write, dedupe) — only steps 1–5 of M1 differ.
+# title-signal:
+#   enabled: false
+#   name: "Title Signal"
+#   aliases: []
+#   connector: apollo
+#   endpoint: apollo_mixed_companies_search   # 1 credit per search returning ≥1 result, 0 on miss
+#   apollo_query:
+#     posted_within_days: 30
+#     organization_locations: ["United States"]
+#     organization_num_employees_ranges: ["10,500"]
+#     per_page: 100
+#   job_title_keywords: ["head of REPLACE", "director of REPLACE", "VP of REPLACE"]
+#   policy:
+#     require_salesnav_before_route: false
+#     push_to_crm_after: routed
+
+# Label-only example: no recipe, never pulled; M2 applies the label by hand from evidence.
+# referral:
+#   enabled: false
+#   name: "Referral"
+#   aliases: []
+
+dedupe:
+  company_list_id: REPLACE-WITH-THEIRSTACK-LIST-ID   # "Companies seen" list — primary server-side dedupe
+  company_domain_not_cap: 350               # second leg; >~600 fails with a billed parse error
+  feed_list_after_every_pull: true          # the list does NOT auto-update
+  leg_builder: lib/dedupe-leg.ts            # READ-ONLY ranker for the company_domain_not leg
+  list_snapshot_dir: raw/theirstack/lists   # <date>-<company_list_id>.json (0 credits); refresh weekly
+  merge_verified_window_days: 30            # merge-mode signals: accounts verified inside this window are excluded
+  merge_verified_field: verified_at         # the account.yaml date field that window reads
+  exclusion_bug_domains: []                 # domains the source keeps returning despite exclusion — drop on sight
+
+limits:
+  credit_guard_min: 60                      # TheirStack credits required per enabled pull signal
+  pull_limit_max: 15                        # drop to 8 (then 5) on timeout
+  cost_per_company_credits: 3
+  salesnav_lookups_per_run: 25              # browser research pass: view/search only, human-like pacing; overflow queues

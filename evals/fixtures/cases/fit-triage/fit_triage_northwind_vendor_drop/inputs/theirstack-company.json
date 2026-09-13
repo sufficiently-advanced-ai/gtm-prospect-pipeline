@@ -1,0 +1,22 @@
+{
+  "metadata": { "total_results": 1, "query": "search_companies — hiring-signal" },
+  "data": [
+    {
+      "domain": "northwind-automation.example",
+      "name": "Northwind Automation Labs",
+      "employee_count": 85,
+      "industry": "Transportation & Logistics",
+      "is_recruiting_agency": false,
+      "long_description": "Northwind Automation Labs helps freight forwarders and 3PLs modernize back-office operations across North America.",
+      "country_code": "US",
+      "jobs_found": [
+        {
+          "job_title": "Implementation Lead, Freight Operations",
+          "date_posted": "2026-02-03",
+          "matching_phrases": ["run AI-driven document intake and exception handling for our logistics customers"]
+        }
+      ]
+    }
+  ],
+  "_excerpt": "company block for northwind-automation.example only — 24 other companies removed"
+}

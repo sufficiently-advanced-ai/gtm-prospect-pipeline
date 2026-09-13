@@ -1,0 +1,11 @@
+{
+  "_query": { "tool": "apollo_mixed_people_api_search", "q_organization_domains_list": ["saltmarsh-marine.example"], "include_similar_titles": false, "per_page": 25 },
+  "total_entries": 5,
+  "people": [
+    { "name": "Callum Straithmore", "title": "Chief Executive Officer", "seniority": "c_suite", "last_refreshed_at": "2026-01-30T00:00:00Z", "organization": { "name": "Saltmarsh Marine Services", "domain": "saltmarsh-marine.example" } },
+    { "name": "Ingrid Halvorsen-Mbeki", "title": "Chief Innovation Officer", "headline": "Leading Saltmarsh's fleet retrofit and IMO emissions-compliance programs", "seniority": "c_suite", "last_refreshed_at": "2026-01-30T00:00:00Z", "organization": { "name": "Saltmarsh Marine Services", "domain": "saltmarsh-marine.example" } },
+    { "name": "Rafael Duquesne-Ortiz", "title": "Chief Financial Officer", "seniority": "c_suite", "last_refreshed_at": "2025-11-11T00:00:00Z", "organization": { "name": "Saltmarsh Marine Services", "domain": "saltmarsh-marine.example" } },
+    { "name": "Miriam Okonjo-Bassett", "title": "VP Port Operations", "seniority": "vp", "last_refreshed_at": "2026-01-30T00:00:00Z", "organization": { "name": "Saltmarsh Marine Services", "domain": "saltmarsh-marine.example" } },
+    { "name": "Stellan Vickery", "title": "IT Manager", "seniority": "manager", "last_refreshed_at": "2025-09-03T00:00:00Z", "organization": { "name": "Saltmarsh Marine Services", "domain": "saltmarsh-marine.example" } }
+  ]
+}

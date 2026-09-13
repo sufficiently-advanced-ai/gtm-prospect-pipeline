@@ -1,0 +1,5 @@
+REASONING
+
+Every structured field says manufacturer: "Industrial Machinery", `is_recruiting_agency: false`, 140 employees, a Director of Automation Engineering posting with predictive-maintenance language. The procedure says these fields lie and a homepage read settles what the company IS. The homepage is a search firm — "the Midwest's manufacturing search firm", retained and contingent search, 1,400 placements at 300 manufacturers, and a nav of Hire talent / Search jobs / Submit your resume. The featured openings list the very posting that matched, labelled "confidential client, Ohio". So the posting markets a client placement, not an internal seat at Copperfield. That is the ICP's staffing_or_agency class. Drop.
+
+{"decision": "drop", "drop_class": "staffing_or_agency", "rationale": "The homepage is a retained/contingent search firm (Hire talent / Submit your resume, 1,400 placements) and lists the matching posting as a confidential client opening; the manufacturing tag and is_recruiting_agency:false describe its clients, not the company."}

@@ -1,0 +1,33 @@
+id: route_harborline_qualified_open_seat
+task: route
+version: 1
+description: >-
+  A clean QUALIFIED. The senior roster has a CEO, COO, CFO, a VP Operations and a Director
+  of IT whose scope is infrastructure and helpdesk; the leadership page agrees; the only
+  mention of the function is the OPEN Head of Operations Technology posting. An unfilled
+  seat is a buying signal, not a sitting owner. Trap: reading the Director of IT as the
+  owner of the function, or holding the account as thin because nobody owns it yet.
+provenance:
+  domain: harborline-freight.example
+  source: "synthetic — shipped with the public repo; replace with your own excerpted decisions"
+inputs:
+  - path: inputs/apollo-sweep.json
+    role: apollo_sweep
+  - path: inputs/firecrawl-leadership.md
+    role: firecrawl_leadership
+  - path: inputs/posting.md
+    role: posting
+gold:
+  route: QUALIFIED
+  evidence_names:
+    - Marisol Ferrante
+forbidden:
+  - field: route
+    value: SKIP
+    reason: >-
+      A Director of IT running infrastructure and helpdesk was read as the sitting owner of
+      the function because "IT" sounded adjacent. Scope, not title string: the remit is
+      networks and endpoints, and the function's seat is the open posting.
+notes: >-
+  Synthetic fixture. evidence_names is scored as recall only (reported, never gated): the
+  Director of IT is the one person the call could turn on.

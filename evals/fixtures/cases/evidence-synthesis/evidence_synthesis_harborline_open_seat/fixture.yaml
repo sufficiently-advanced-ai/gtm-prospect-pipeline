@@ -1,0 +1,84 @@
+id: evidence_synthesis_harborline_open_seat
+task: evidence-synthesis
+version: 1
+description: >-
+  Full-raw-set synthesis for an account whose whole story is a seat nobody sits in: a
+  family-owned regional carrier with a named C-suite of non-technologists, an open Head of
+  Operations Technology posting that carries the AI mandate, and a Director of IT whose
+  remit stops at infrastructure. Stresses the three things synthesis gets wrong under
+  pressure — inventing a technology owner where none is named, promoting "nobody owns the
+  function" from inference to fact, and offering workflow CATEGORIES instead of one
+  grounded, recognizable instance with a measurable pilot metric.
+provenance:
+  domain: harborline-freight.example
+  source: "synthetic — shipped with the public repo; replace with your own excerpted decisions"
+inputs:
+  - path: inputs/posting-head-of-operations-technology.md
+    role: posting
+  - path: inputs/firecrawl-homepage.md
+    role: firecrawl_homepage
+  - path: inputs/firecrawl-leadership.md
+    role: firecrawl_leadership
+  - path: inputs/firecrawl-press-terminal-expansion.md
+    role: firecrawl_press_terminal_expansion
+  - path: inputs/apollo-people.json
+    role: apollo_people
+rubric:
+  must:
+    - id: sections_present
+      text: >-
+        The evidence.md carries the five M5 sections — Company, Leadership map, The signal,
+        Posture, Angles — each with at least one substantive claim under it.
+    - id: leadership_named_no_owner
+      text: >-
+        The leadership map names the executives from the leadership page with their titles
+        — Ruth Ashgrove (CEO), Desmond Ferreira-Kole (COO), Anneliese Brackwater (CFO), Kwame
+        Tannerhill (VP Operations), Marisol Ferrante (Director of IT) — and states that no
+        one on that page owns AI, automation or data. It must not name a technology executive
+        the inputs do not name.
+    - id: signal_is_open_seat
+      text: >-
+        The open Head of Operations Technology posting is identified as the signal, and the
+        evidence.md states that the AI/automation mandate (dispatch, billing, customer
+        service) sits inside that unfilled seat rather than with any current incumbent.
+    - id: nobody_owns_is_inference
+      text: >-
+        The "nobody owns the function today" conclusion is marked as an inference or
+        hypothesis, not as a fact. The observations it rests on (the posting assigns the
+        mandate to the open role; the leadership page names no such owner) may be marked
+        fact, but the no-owner conclusion itself must not be.
+    - id: grounded_instance
+      text: >-
+        The Angles section grounds at least ONE specific, recognizable instance of the
+        problem — not a category like "reporting" or "dispatch" — and gives, for it, the
+        workflow, who runs it, its current failure mode, and a measurable pilot metric
+        candidate. The instance in the inputs is the daily linehaul dispatch board rebuilt
+        by hand each morning from the TMS and driver call-ins (the press item and the
+        posting both describe it); an equivalent instance drawn from the same inputs is
+        acceptable.
+    - id: no_class_promotion
+      text: >-
+        Spot-check three or more claims against their cited input: no claim is marked with a
+        higher evidence class than its source supports. Anything the cited source states
+        directly may be `fact`; any read, motive, prediction, or "this implies" must be
+        `inference` or `hypothesis`.
+  should:
+    - id: coo_as_entry_point
+      text: >-
+        The Angles identify COO Desmond Ferreira-Kole as the buyer or entry point, on the
+        strength of the posting reporting to the COO and the press item quoting him on the
+        dispatch problem.
+    - id: sensitive_markers_used
+      text: >-
+        Claims that would be invasive, accusatory, or embarrassing if echoed back to the
+        company carry the `· sensitive` marker — e.g. the read that nobody owns the function,
+        or the read that dispatch runs on spreadsheets and phone calls.
+    - id: expansion_timing
+      text: >-
+        The evidence.md reads the fifth-terminal expansion announced in the press item as
+        timing pressure on the open seat.
+notes: >-
+  Synthetic fixture. The rubric is calibrated against a hand-written reference evidence.md
+  that was NOT shipped (the judge never sees a reference; every check is verifiable from the
+  inputs alone). No forbidden trap: evidence-synthesis has no verdict field, and the
+  lessons live in the must checks.

@@ -1,0 +1,12 @@
+id: route_selftest_missing_role
+task: route
+version: 1
+description: no apollo_sweep input
+provenance:
+  domain: selftest-bad.invalid
+  source: harness self-test — synthetic
+inputs:
+  - path: inputs/posting.md
+    role: posting
+gold:
+  route: QUALIFIED

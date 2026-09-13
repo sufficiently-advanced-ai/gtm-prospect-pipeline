@@ -1,0 +1,9 @@
+{
+  "fixture_id": "fit_triage_harborline_operator_keep",
+  "task": "fit-triage",
+  "fixture_sha": "53c5c22a1c7f9d38a57663a673888bf288de0be9319b65324f76e7727c00da6d",
+  "prompt_sha": "4c214f8f21cc8f2ece597e75dc263965aea0f1de7a4c1d3e5b8decc097e690ba",
+  "model": "synthetic-seed",
+  "response": "REASONING\n\nHarborline is an operating company: the homepage is terminals, tractors, trailers and a customer portal for shipments; the source row says LTL and drayage carrier with 240 employees; the posting's About paragraph says \"We move freight; we do not build software for sale.\" Nothing here matches a drop class. The automation-heavy language in the posting is the company wanting to ADOPT the capability — \"build our AI and automation roadmap for dispatch, billing and customer service\" — which is exactly the signal, not vendor self-description. Headcount sits inside a 10–500 band, it is a direct employer, it is not a job board, not public sector, and the posting plainly belongs to this domain. The ICP's illustrative rule keeps operating companies in any vertical. Keep.\n\n{\"decision\": \"keep\", \"drop_class\": null, \"rationale\": \"A regional freight carrier (terminals, fleet, customer portal) hiring its first operations-technology leader; the posting describes adopting the capability, and the company states it does not build software for sale.\"}\n",
+  "recorded_at": "2026-09-13T23:24:02.393Z"
+}

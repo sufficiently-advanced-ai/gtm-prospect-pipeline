@@ -1,0 +1,16 @@
+id: route_selftest_bad_gold
+task: route
+version: 1
+description: gold carries a route value the runner never offers, and a trap on a retired value
+provenance:
+  domain: selftest-bad.invalid
+  source: harness self-test — synthetic
+inputs:
+  - path: inputs/apollo-people.json
+    role: apollo_sweep
+gold:
+  route: MAYBE
+forbidden:
+  - field: route
+    value: HOLD
+    reason: synthetic — a value outside the vocabulary

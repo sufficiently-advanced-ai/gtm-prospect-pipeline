@@ -1,0 +1,30 @@
+id: fit_triage_copperfield_staffing_homepage
+task: fit-triage
+version: 1
+description: >-
+  A staffing firm that only the homepage read exposes. The source row says industry
+  "Industrial Machinery", `is_recruiting_agency: false`, 140 employees — every structured
+  field points at an operating manufacturer, and the posting is for a "Director of
+  Automation Engineering". The homepage is built around Submit your resume / Search jobs /
+  Hire talent: the posting markets a client placement, not an internal seat. Trap:
+  keeping it on the structured fields.
+provenance:
+  domain: copperfield-talent.example
+  source: "synthetic — shipped with the public repo; replace with your own excerpted decisions"
+inputs:
+  - path: inputs/theirstack-company.json
+    role: theirstack_company
+  - path: inputs/homepage.md
+    role: homepage
+gold:
+  decision: drop
+  drop_class: staffing_or_agency
+forbidden:
+  - field: decision
+    value: keep
+    reason: >-
+      A recruiting agency was kept because the source row carried `is_recruiting_agency:
+      false` and a manufacturing industry tag. Trusting the tag over the homepage is the
+      exact trust error the procedure warns about: the homepage decides what the company IS.
+notes: >-
+  Synthetic fixture. Every company, person and domain is invented.

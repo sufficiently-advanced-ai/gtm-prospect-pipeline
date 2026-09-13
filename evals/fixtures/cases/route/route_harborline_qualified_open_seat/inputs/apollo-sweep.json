@@ -1,0 +1,12 @@
+{
+  "_query": { "tool": "apollo_mixed_people_api_search", "q_organization_domains_list": ["harborline-freight.example"], "include_similar_titles": false, "per_page": 25 },
+  "total_entries": 6,
+  "people": [
+    { "name": "Ruth Ashgrove", "title": "Chief Executive Officer", "seniority": "c_suite", "last_refreshed_at": "2026-01-20T00:00:00Z", "organization": { "name": "Harborline Freight", "domain": "harborline-freight.example" } },
+    { "name": "Desmond Ferreira-Kole", "title": "Chief Operating Officer", "seniority": "c_suite", "last_refreshed_at": "2026-01-20T00:00:00Z", "organization": { "name": "Harborline Freight", "domain": "harborline-freight.example" } },
+    { "name": "Anneliese Brackwater", "title": "Chief Financial Officer", "seniority": "c_suite", "last_refreshed_at": "2025-11-02T00:00:00Z", "organization": { "name": "Harborline Freight", "domain": "harborline-freight.example" } },
+    { "name": "Kwame Tannerhill", "title": "VP Operations", "seniority": "vp", "last_refreshed_at": "2026-01-20T00:00:00Z", "organization": { "name": "Harborline Freight", "domain": "harborline-freight.example" } },
+    { "name": "Marisol Ferrante", "title": "Director of IT", "headline": "Networks, endpoints, helpdesk and the TMS integration at Harborline", "seniority": "director", "last_refreshed_at": "2026-01-20T00:00:00Z", "organization": { "name": "Harborline Freight", "domain": "harborline-freight.example" } },
+    { "name": "Beatrix Oyelaran", "title": "Director of Safety & Compliance", "seniority": "director", "last_refreshed_at": "2025-12-14T00:00:00Z", "organization": { "name": "Harborline Freight", "domain": "harborline-freight.example" } }
+  ]
+}

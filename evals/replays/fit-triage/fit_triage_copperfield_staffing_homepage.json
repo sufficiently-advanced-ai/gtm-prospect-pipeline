@@ -1,0 +1,9 @@
+{
+  "fixture_id": "fit_triage_copperfield_staffing_homepage",
+  "task": "fit-triage",
+  "fixture_sha": "73c3c5af1ef24d79f270103be3957df52078dc7eab255f3b169f6f20cd81bfed",
+  "prompt_sha": "4c214f8f21cc8f2ece597e75dc263965aea0f1de7a4c1d3e5b8decc097e690ba",
+  "model": "synthetic-seed",
+  "response": "REASONING\n\nEvery structured field says manufacturer: \"Industrial Machinery\", `is_recruiting_agency: false`, 140 employees, a Director of Automation Engineering posting with predictive-maintenance language. The procedure says these fields lie and a homepage read settles what the company IS. The homepage is a search firm — \"the Midwest's manufacturing search firm\", retained and contingent search, 1,400 placements at 300 manufacturers, and a nav of Hire talent / Search jobs / Submit your resume. The featured openings list the very posting that matched, labelled \"confidential client, Ohio\". So the posting markets a client placement, not an internal seat at Copperfield. That is the ICP's staffing_or_agency class. Drop.\n\n{\"decision\": \"drop\", \"drop_class\": \"staffing_or_agency\", \"rationale\": \"The homepage is a retained/contingent search firm (Hire talent / Submit your resume, 1,400 placements) and lists the matching posting as a confidential client opening; the manufacturing tag and is_recruiting_agency:false describe its clients, not the company.\"}\n",
+  "recorded_at": "2026-09-13T23:24:02.392Z"
+}
