@@ -9,27 +9,7 @@ at the batch, say go.
 
 Built on Claude Code. Configured in three files. No dashboard to learn, no vendor to onboard.
 
----
-
-## What it did in production
-
-Ten weeks of daily runs for a B2B consulting practice, using TheirStack for signals, Apollo
-for enrichment and sequencing, and Twenty as the CRM.
-
-| | |
-|---|---|
-| Companies evaluated | 936 |
-| Dropped at triage, before spending a credit on enrichment | 420 (45%) |
-| Verified by a human-grade browser check on LinkedIn Sales Navigator | 350 |
-| Routing decisions the browser check overturned after the API data had said "go" | 71 of 178 (40%) |
-| Contacts staged into sequences, every one paused until a human named the batch | 378 |
-| Unattended runs completed end to end | 33 of 35 |
-| Emails sent without a human go | 0 |
-
-That 40% line is the whole argument for the pipeline. API data alone would have pitched
-four in ten of those accounts to a company that had already hired the person the pitch
-assumed they were missing. The browser pass caught it, on every batch, without anyone
-sitting at the keyboard.
+<img src="docs/img/pipeline.svg" alt="Six unattended steps: pull, qualify, browser check, stage, mirror, record. Contacts sit paused in the sequencer until a human names a batch and says go." width="100%">
 
 ## What you get
 
@@ -45,40 +25,50 @@ sequence and the pipeline picks up the rest.
 **Spend that goes to survivors.** Fit triage runs on free data first. Enrichment credits,
 job-text credits, and browser lookups are spent only on accounts that cleared it.
 
+**A second opinion the APIs can't give.** Enrichment data lags reality. Before anything is
+staged, Claude opens Sales Navigator and checks whether the person your pitch assumes is
+missing was hired last month. View and search only, capped, paced, captured.
+
 **A CRM that stays true.** The flat-file store is the record; the CRM is a mirror. Push is
 idempotent. Drops never reach the CRM. Suppression decisions always do.
 
 **Judgment that does not drift.** The qualification rules are prompts, and prompts get
 edited. A regression suite scores the live rules against frozen decisions before any edit
-lands, so a lesson the pipeline already paid for cannot be un-learned by a wording change.
+lands, so a lesson you already paid for cannot be un-learned by a wording change.
 
-## How it works
+## Setup is a conversation
 
-```mermaid
-flowchart LR
-  M1["1. Pull<br/>signals → raw captures"] --> M2["2. Qualify<br/>triage + 3-source verify"]
-  M2 --> SN["3. Browser check<br/>Sales Navigator, view-only"]
-  SN --> M3["4. Stage<br/>enrich + enroll PAUSED"]
-  M3 --> M8["5. Mirror<br/>CRM push"]
-  M8 --> M7["6. Record<br/>ledger, dashboard, run log"]
-  GO["You: name a batch, say go"] -. "the only unpause" .-> SEQ[(Sequencer)]
-  M3 -. "paused" .-> SEQ
+Clone, install, then type `/setup` in Claude Code. It interviews you about who you sell to,
+what the buying signal is, and what a disqualifier looks like, then writes the three config
+files from your answers, pulls your real sequence and field ids through the Apollo
+connector, sizes your signal pool at zero cost, and runs the checks. Fifteen minutes,
+no YAML written by hand.
+
+```bash
+git clone https://github.com/sajennings79/gtm-prospect-pipeline && cd gtm-prospect-pipeline
+npm install
+claude            # then, inside Claude Code:
+/setup
 ```
 
-1. **Pull.** Every enabled signal runs. Responses land verbatim in `raw/` before anything
-   reads them. New domains get an account stub only after a guard confirms they are new.
-2. **Qualify.** Fit triage against `config/icp.md`, then identity plus three-source
-   verification. Each account gets one binary route: `QUALIFIED`, `SKIP`, `FLAGGED`, or
-   `DROPPED`.
-3. **Browser check.** Claude drives a logged-in Sales Navigator session, view and search
-   only, and confirms or flips the routing. Capped, paced, captured at observation time.
-4. **Stage.** Contacts are enriched, checked against every suppression list, and enrolled
-   paused into whatever sequence the config resolves for their signal.
-5. **Mirror.** Accounts and people upsert into the CRM with a note per decision.
-6. **Record.** Registry entry, structured run record, decision ledger, dashboard.
+Prerequisites: Node 24+ and [Claude Code](https://docs.anthropic.com/en/docs/claude-code)
+with the Apollo and TheirStack MCP connectors. Optional: a [Twenty](https://twenty.com) CRM
+and Claude-in-Chrome with a Sales Navigator login for the browser check. `npm run doctor`
+shows what's configured and what's still open, any time.
 
-Then you open the dashboard, read the batch, and run `/m4-go-live` on it. Nothing else in
-the system can unpause a contact.
+<img src="docs/img/three-files.svg" alt="You edit three files: config/signal.yaml, config/sequences.yaml, config/icp.md. Everything else is the engine." width="100%">
+
+## Then, every day
+
+```
+/pipeline-batch          # pull → qualify → browser check → stage (paused) → mirror → record
+/m4-go-live <batch>      # you, when you're ready
+```
+
+Sequences start as `draft`. Until you flip one to `active`, batches qualify and stage
+accounts and hold them at `routed`, so you can watch the pipeline judge for a week before
+a single email is queued. Approve your copy, change one word in `config/sequences.yaml`,
+and the held accounts flow into the sequence on the next run without re-triage.
 
 ## What you could build on it
 
@@ -97,50 +87,6 @@ the system can unpause a contact.
   second connector. Adding a third is a new acquisition recipe and the same downstream.
 - **Your own eval corpus.** Every correction you make becomes a fixture. The suite grows
   into a record of your team's judgment that survives staff changes and prompt rewrites.
-
-## Quickstart
-
-Prerequisites: Node 24+, [Claude Code](https://docs.anthropic.com/en/docs/claude-code) with
-the Apollo and TheirStack MCP connectors. Optional: a [Twenty](https://twenty.com) instance
-for the CRM mirror, and Claude-in-Chrome with a Sales Navigator login for the browser check.
-
-```bash
-git clone https://github.com/sajennings79/gtm-prospect-pipeline && cd gtm-prospect-pipeline
-npm install
-
-mkdir -p ~/.config/gtm-prospect-pipeline
-cat > ~/.config/gtm-prospect-pipeline/env <<'ENV'
-PIPELINE_DATA=$HOME/Data/gtm-prospect-pipeline
-TWENTY_BASE_URL=        # blank = run without a CRM
-TWENTY_API_KEY=
-ENV
-chmod 600 ~/.config/gtm-prospect-pipeline/env
-```
-
-Edit the three files that are yours:
-
-| File | What goes in it |
-|---|---|
-| `config/signal.yaml` | What a signal is and where it comes from |
-| `config/sequences.yaml` | Which sequence each signal feeds, caps, suppression, merge fields |
-| `config/icp.md` | What a fit looks like, disqualifiers, drop classes |
-
-Validate and test:
-
-```bash
-node lib/sequence-resolver.ts --validate
-npm test
-```
-
-Then inside Claude Code at the repo root:
-
-```
-/pipeline-batch          # runs the six steps, ends with everything paused
-/m4-go-live <batch>      # you, when ready
-```
-
-Sequences start as `draft`, so the first batch will qualify and stage accounts and hold
-them at `routed` until you flip a sequence to `active`. That is the lifecycle working.
 
 ## Built to be trusted with your domain
 
@@ -161,6 +107,7 @@ behind the bigger choices is in [docs/decisions](docs/decisions).
 
 | Module | Role |
 |---|---|
+| `/setup` | Agent-led onboarding. Interview → config → connector ids → checks. |
 | M1 `signal-pull` | Gather. Run signals, capture raw, stub new accounts. |
 | M2 `triage-route` | Qualify. Triage, verify, classify. Runs the browser check. |
 | M3 `enrich-enroll` | Stage. Enrich, suppress, enroll paused. |
@@ -178,10 +125,6 @@ against them, live or replayed at $0, and `scripts/check-evals.sh` gates every e
 skill or config file. The fixtures shipped here are synthetic; replace them with your own
 corrected decisions in a private fork.
 
-## Status and license
-
-Extracted from a private pipeline that ran daily for ten weeks. The engine, guards, evals
-harness, and commented config templates are here. The original ICP, signal definitions, and
-sequence copy are not. Everyone writes their own.
+## License
 
 MIT. Author: Scott Jennings.

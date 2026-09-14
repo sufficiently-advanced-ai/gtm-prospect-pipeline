@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <rect width="1200" height="300" rx="16" fill="#ffffff"/>
+  <text x="40" y="52" font-size="13" fill="#5b6470" letter-spacing="1.2">YOU EDIT THREE FILES</text>
+
+  <g font-size="14" fill="#1f2933">
+    <rect x="40" y="72" width="352" height="150" rx="12" fill="#eef6ff" stroke="#93c5fd"/>
+    <text x="60" y="104" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" font-weight="600">config/signal.yaml</text>
+    <text x="60" y="132" font-size="13" fill="#3b4652">What a buying signal is and</text>
+    <text x="60" y="152" font-size="13" fill="#3b4652">where it comes from.</text>
+    <text x="60" y="184" font-size="12" fill="#5b6470">job postings · title searches ·</text>
+    <text x="60" y="202" font-size="12" fill="#5b6470">referral lists · your own connector</text>
+
+    <rect x="424" y="72" width="352" height="150" rx="12" fill="#eef6ff" stroke="#93c5fd"/>
+    <text x="444" y="104" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" font-weight="600">config/sequences.yaml</text>
+    <text x="444" y="132" font-size="13" fill="#3b4652">Which sequence each signal feeds,</text>
+    <text x="444" y="152" font-size="13" fill="#3b4652">and the limits you never exceed.</text>
+    <text x="444" y="184" font-size="12" fill="#5b6470">draft → active → retired · daily caps ·</text>
+    <text x="444" y="202" font-size="12" fill="#5b6470">suppression lists · merge fields</text>
+
+    <rect x="808" y="72" width="352" height="150" rx="12" fill="#eef6ff" stroke="#93c5fd"/>
+    <text x="828" y="104" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" font-weight="600">config/icp.md</text>
+    <text x="828" y="132" font-size="13" fill="#3b4652">What a fit looks like,</text>
+    <text x="828" y="152" font-size="13" fill="#3b4652">in your own words.</text>
+    <text x="828" y="184" font-size="12" fill="#5b6470">who you sell to · disqualifiers ·</text>
+    <text x="828" y="202" font-size="12" fill="#5b6470">drop classes · known false positives</text>
+  </g>
+
+  <text x="40" y="262" font-size="13" fill="#5b6470">Everything else — the modules, the guards, the resolver, the CRM adapter, the evals — is the engine. You leave it alone.</text>
+</svg>

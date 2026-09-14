@@ -12,6 +12,8 @@ SAFETY.md, before changing anything.
 - Run `bash scripts/check-evals.sh` before landing any edit to `skills/*/SKILL.md`,
   `config/icp.md`, `config/signal.yaml`, or `config/sequences.yaml`.
 - Scripts are plain TypeScript run with `node <script>.ts` (node 24+, erasable syntax only).
+- Fresh clone: `/setup` (skills/setup) walks the operator through config; `npm run doctor`
+  reports what is still open.
 - Hard rules live in SAFETY.md. The short version: nothing sends without a human "go";
   everything enrolls paused; suppression check before every enrollment; capture-first;
   check-then-write; the store outranks the CRM; connector flake = one retry then BLOCKED.

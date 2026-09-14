@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="440" viewBox="0 0 1200 440" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b6470"/>
+    </marker>
+    <marker id="arr-gate" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b45309"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="440" rx="16" fill="#ffffff"/>
+
+  <!-- autonomous band -->
+  <rect x="32" y="40" width="1136" height="200" rx="14" fill="#f4f6f8" stroke="#dfe3e8"/>
+  <text x="52" y="66" font-size="13" fill="#5b6470" letter-spacing="1.2">RUNS UNATTENDED, EVERY MORNING</text>
+
+  <!-- six steps -->
+  <g font-size="14" fill="#1f2933">
+    <g>
+      <rect x="52" y="86" width="164" height="124" rx="10" fill="#ffffff" stroke="#c9d0d8"/>
+      <text x="68" y="112" font-size="12" fill="#8a94a1">1</text>
+      <text x="68" y="134" font-weight="600">Pull</text>
+      <text x="68" y="156" font-size="12" fill="#5b6470">signals → raw captures</text>
+      <text x="68" y="174" font-size="12" fill="#5b6470">new domains guarded</text>
+    </g>
+    <g>
+      <rect x="240" y="86" width="164" height="124" rx="10" fill="#ffffff" stroke="#c9d0d8"/>
+      <text x="256" y="112" font-size="12" fill="#8a94a1">2</text>
+      <text x="256" y="134" font-weight="600">Qualify</text>
+      <text x="256" y="156" font-size="12" fill="#5b6470">triage against your ICP</text>
+      <text x="256" y="174" font-size="12" fill="#5b6470">3-source verification</text>
+    </g>
+    <g>
+      <rect x="428" y="86" width="164" height="124" rx="10" fill="#ffffff" stroke="#c9d0d8"/>
+      <text x="444" y="112" font-size="12" fill="#8a94a1">3</text>
+      <text x="444" y="134" font-weight="600">Browser check</text>
+      <text x="444" y="156" font-size="12" fill="#5b6470">Sales Navigator</text>
+      <text x="444" y="174" font-size="12" fill="#5b6470">view &amp; search only</text>
+    </g>
+    <g>
+      <rect x="616" y="86" width="164" height="124" rx="10" fill="#ffffff" stroke="#c9d0d8"/>
+      <text x="632" y="112" font-size="12" fill="#8a94a1">4</text>
+      <text x="632" y="134" font-weight="600">Stage</text>
+      <text x="632" y="156" font-size="12" fill="#5b6470">enrich · suppress</text>
+      <text x="632" y="174" font-size="12" fill="#5b6470">enroll PAUSED</text>
+    </g>
+    <g>
+      <rect x="804" y="86" width="164" height="124" rx="10" fill="#ffffff" stroke="#c9d0d8"/>
+      <text x="820" y="112" font-size="12" fill="#8a94a1">5</text>
+      <text x="820" y="134" font-weight="600">Mirror</text>
+      <text x="820" y="156" font-size="12" fill="#5b6470">CRM upsert</text>
+      <text x="820" y="174" font-size="12" fill="#5b6470">one note per decision</text>
+    </g>
+    <g>
+      <rect x="992" y="86" width="156" height="124" rx="10" fill="#ffffff" stroke="#c9d0d8"/>
+      <text x="1008" y="112" font-size="12" fill="#8a94a1">6</text>
+      <text x="1008" y="134" font-weight="600">Record</text>
+      <text x="1008" y="156" font-size="12" fill="#5b6470">ledger · run log</text>
+      <text x="1008" y="174" font-size="12" fill="#5b6470">dashboard</text>
+    </g>
+  </g>
+  <g stroke="#5b6470" stroke-width="1.6" marker-end="url(#arr)">
+    <line x1="216" y1="148" x2="238" y2="148"/>
+    <line x1="404" y1="148" x2="426" y2="148"/>
+    <line x1="592" y1="148" x2="614" y2="148"/>
+    <line x1="780" y1="148" x2="802" y2="148"/>
+    <line x1="968" y1="148" x2="990" y2="148"/>
+  </g>
+
+  <!-- sequencer + gate -->
+  <rect x="616" y="300" width="164" height="72" rx="10" fill="#ffffff" stroke="#c9d0d8"/>
+  <text x="698" y="330" font-size="14" font-weight="600" fill="#1f2933" text-anchor="middle">Sequencer</text>
+  <text x="698" y="352" font-size="12" fill="#5b6470" text-anchor="middle">contacts sit paused</text>
+  <line x1="698" y1="210" x2="698" y2="298" stroke="#5b6470" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+  <text x="710" y="262" font-size="12" fill="#5b6470">paused</text>
+
+  <rect x="900" y="288" width="248" height="96" rx="12" fill="#fff7ed" stroke="#f59e0b" stroke-width="1.6"/>
+  <text x="1024" y="320" font-size="13" fill="#b45309" text-anchor="middle" letter-spacing="1.2">THE ONE HUMAN GATE</text>
+  <text x="1024" y="346" font-size="15" font-weight="600" fill="#1f2933" text-anchor="middle">You name a batch. Say go.</text>
+  <text x="1024" y="368" font-size="12" fill="#5b6470" text-anchor="middle">nothing else can unpause a contact</text>
+  <line x1="898" y1="336" x2="782" y2="336" stroke="#b45309" stroke-width="1.8" marker-end="url(#arr-gate)"/>
+</svg>
