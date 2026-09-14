@@ -48,7 +48,7 @@ connector, sizes your signal pool at zero cost, and runs the checks. Fifteen min
 no YAML written by hand.
 
 ```bash
-git clone https://github.com/sajennings79/gtm-prospect-pipeline && cd gtm-prospect-pipeline
+git clone https://github.com/sufficiently-advanced-ai/gtm-prospect-pipeline && cd gtm-prospect-pipeline
 npm install
 claude            # then, inside Claude Code:
 /setup
