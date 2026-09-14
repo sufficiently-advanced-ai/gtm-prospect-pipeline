@@ -96,6 +96,26 @@ known accounts in two weeks, most of them mid-sequence, because recency is not t
 Mechanism: M1 procedure plus `limits.pull_limit_max` in `config/signal.yaml`; a 0-credit
 preflight count runs before any billed pull when `preflight_free_count: true`.
 
+**Ask for what changed since the last run, not the whole window.** A description-pattern
+filter regex-scans every posting in the posted_at window on every call; a daily discovery
+run that already dedupes against the seen-list re-derives an answer it has. Mechanism:
+`discovered_at_lookback: auto` on discovery signals; `lib/discovered-window.ts` computes
+the lookback from the last billed pull and refuses to narrow when the previous pull could
+not have drained the pool (a posting that ages out of the window unfetched is gone for
+good). `posted_at_*` stays in the payload. Incident: a filter stack was diagnosed as "too
+many excluded domains" for weeks; the vendor's request log showed a call with a handful of
+excluded domains timing out identically and legs many times longer never failing — the
+regex over the wide posting window was the whole cost. Narrowing the window cut the
+identical query several-fold. Rule that came out of it: diagnose a timeout from the
+server's log, not from the client's error rendering.
+
+**Feed lists from captures, never from searches.** The vendor's list endpoint only accepts
+its own company ids, and a search to obtain one bills. Every capture already carries the
+id. Mechanism: `lib/list-feed.ts` harvests ids from `raw/` and emits what each list is
+missing (`--list seen|terminal`); the domain-exclusion cap is a payload courtesy and tier
+overflow means "feed the lists", never "raise the cap". `property_exists_and: [domain]` on
+every company search — a null-domain row bills and cannot be stubbed.
+
 **Credit guard.** M1 refuses to pull when the source's balance is below
 `limits.credit_guard_min` per enabled signal. Spend is reported in every run record, not
 gated per run.

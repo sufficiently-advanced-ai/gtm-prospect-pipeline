@@ -45,11 +45,29 @@ M2 applies those labels from evidence. Signals with `preflight_free_count: true`
    when the script warns it is out of date:** `get_companies_in_list` for the dedupe list
    (`limit: 1000`) → `raw/theirstack/lists/<date>-<list-id>.json` (raw MCP shape or compact
    `{companies:[{domain,id,added_at}]}`). An old snapshot is safe — it only spends leg
-   slots. NEVER exceed the config cap (billed parse failure above it).
+   slots. **Feed from raw on the same refresh (0 credits):** `node lib/list-feed.ts --list
+   seen --ids` emits the source's company ids you already hold (every capture carries them)
+   for store accounts the snapshot lacks → one `add_companies_to_list` call. Accounts with
+   no id anywhere in raw (other connectors, manual sourcing) are what the domain leg is for.
+   Do not exceed the cap, but know what it is: a payload-size courtesy, not a failure
+   boundary — long legs never failed a search in the vendor's own request log; what times
+   out is a description pattern over a wide posted_at window (step 3). Tier overflow on
+   stderr means "feed the lists", never "raise the cap".
 3. **Pull.** `search_companies` with THIS signal's filters from config (the endpoint stays
    `search_companies` even for JD-regex signals — `search_jobs` bills per job). `limit` =
    `limits.pull_limit_max`, stepping 15 → 8 → 5 on timeout. Persist the response verbatim
-   FIRST, then extract with `rg -o`; never read it whole.
+   FIRST, then extract with `rg -o`; never read it whole. **Discovery window (blocks with
+   `discovered_at_lookback: auto`):** run `node lib/discovered-window.ts --signal-key <key>`
+   first and put its `discovered_at_max_age_days` in the payload when it is a number; when
+   it is `null` (previous pull returned exactly `limit`, no prior billed pull, or the weekly
+   `--sweep`) send the full window. `posted_at_max_age_days` STAYS in the payload either way
+   — `discovered_at_*` alone is rejected. Why: a description pattern regex-scans every
+   posting in the posted_at window on every call (no index) — that, not the domain leg, is
+   what times out; asking only for what the source discovered since the last run cut an
+   identical query several-fold with the same results. A posting that ages out of the discovered_at
+   window unfetched never re-enters it, which is why the script, not a habit, decides N.
+   Record the plan JSON in the pull's capture note. Every TheirStack block also carries
+   `property_exists_and: [domain]` — pass it; a null-domain row bills and cannot be stubbed.
 4. **Capture (before any interpretation):** full response →
    `raw/theirstack/<date>-<signal-key>-pull-<n>.json`; per NEW company, job-posting full
    text + source URL + capture date → `raw/postings/<domain>/<date>-<slug>.md` (the richest
@@ -111,8 +129,15 @@ cohort. Two deviations, everything else unchanged:
   account already seen in this signal's pulls (terminal statuses first — they can never
   become work items), and accounts whose `dedupe.merge_verified_field` is inside
   `merge_verified_window_days`. The leg is REQUIRED — pull-guard is the correctness
-  backstop, the leg is the cost control, both run. Step 5 still runs: the list must stay
-  complete for every OTHER signal.
+  backstop, the leg is the cost control, both run. **Capless leg:** when
+  `dedupe.terminal_list_id` is set, pass `company_list_id_not: [<terminal_list_id>]` (the
+  terminal list ONLY — never the seen-list on a merge block) and the domain leg sorts its
+  members last. Create it once with `create_company_list`, feed it at 0 credits from the
+  ids raw already holds (`node lib/list-feed.ts --list terminal --ids` →
+  `add_companies_to_list`), snapshot it like the seen-list. Terminal =
+  dropped/skipped/opted-out/active/enrolled-paused; accounts that can still become work
+  items are never fed to it. Step 5 still runs: the seen-list must stay complete for every
+  OTHER signal.
 - **Step 6:** pull-guard still runs first, but `EXISTS` is a WORK ITEM: append the new raw
   pointers to the EXISTING account (never `createAccountStub()`, never touch
   `signal_source`) and set a `pending-verification` flag ONLY on accounts in pre-enrollment
@@ -121,8 +146,11 @@ cohort. Two deviations, everything else unchanged:
   a suppressed verdict is not reopened by a repost. Raw pointers append unconditionally.
 
 Window math: `posted_at_gte = today − posted_at_max_age_days`, `posted_at_lte = today −
-posted_at_min_age_days`, recomputed at pull time. NEVER filter on `is_closed` (non-functional
-— openness is M2's, at verification time).
+posted_at_min_age_days`, recomputed at pull time. No `discovered_at` leg here — this signal
+asks how OLD a posting is. NEVER filter on `is_closed` at query time: job-board closure
+tracking is young and uneven (the vendor's own figures show most older postings never get a
+`closed_at`), so `closed_at: null` means "not observed", not "open". Measure it on a recent
+cohort before using it even as a prefilter; openness is M2's, at verification time, regardless.
 
 ## Apollo connector (per enabled `connector: apollo` signal)
 

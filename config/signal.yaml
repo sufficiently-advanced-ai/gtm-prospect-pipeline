@@ -28,7 +28,18 @@ hiring-signal:
   job_country_code_or: [US]
   min_employee_count: 10
   max_employee_count: 500
-  posted_at_max_age_days: 30
+  posted_at_max_age_days: 30          # STAYS in the payload even with the discovered_at leg below —
+                                      # discovered_at_* alone is rejected ("Missing mandatory filter").
+                                      # Narrow it before widening: a description pattern regex-scans every
+                                      # posting in this window on every call (no index); 90d is ~2.7x the
+                                      # text of 30d and where the gateway timeouts live.
+  discovered_at_lookback: auto        # ask only for postings the source DISCOVERED since the last billed
+                                      # pull of this signal: M1 sets discovered_at_max_age_days from
+                                      # `node lib/discovered-window.ts --signal-key <key>` (gap + 2d; null =
+                                      # full window when the previous pull returned exactly `limit`, on the
+                                      # weekly --sweep, or with no prior pull). Discovery signals only —
+                                      # never on a posting-age (merge-mode) signal.
+  property_exists_and: [domain]       # a null-domain row bills and cannot be stubbed — server-side, 0 cost
   company_type: direct_employer       # drops agencies/recruiters/staffing shops server-side
   industry_id_not: []                 # TheirStack industry ids to exclude (measure before adding — each
                                       # id should remove many drops and ~zero kept accounts)
@@ -66,16 +77,32 @@ hiring-signal:
 
 dedupe:
   company_list_id: REPLACE-WITH-THEIRSTACK-LIST-ID   # "Companies seen" list — primary server-side dedupe
-  company_domain_not_cap: 350               # second leg; >~600 fails with a billed parse error
-  feed_list_after_every_pull: true          # the list does NOT auto-update
+  terminal_list_id: null                    # optional second list for merge-mode signals (which never
+                                            # exclude the seen-list): TERMINAL accounts only. Create once
+                                            # with create_company_list, paste the id, feed it with
+                                            # `node lib/list-feed.ts --list terminal --ids` (0 credits),
+                                            # snapshot it like the seen-list. null = no terminal leg.
+  company_domain_not_cap: 700               # second leg. A payload-size courtesy, NOT a failure boundary:
+                                            # per the vendor's request log long legs never failed a search
+                                            # (timeouts come from description patterns over the posted_at
+                                            # window). Tier overflow on stderr means "feed the lists at 0
+                                            # credits" (lib/list-feed.ts), never "raise this number".
+  feed_list_after_every_pull: true          # the list does NOT auto-update; also feed it from raw ids on the
+                                            # weekly snapshot refresh: `node lib/list-feed.ts --list seen --ids`
   leg_builder: lib/dedupe-leg.ts            # READ-ONLY ranker for the company_domain_not leg
   list_snapshot_dir: raw/theirstack/lists   # <date>-<company_list_id>.json (0 credits); refresh weekly
   merge_verified_window_days: 30            # merge-mode signals: accounts verified inside this window are excluded
   merge_verified_field: verified_at         # the account.yaml date field that window reads
-  exclusion_bug_domains: []                 # domains the source keeps returning despite exclusion — drop on sight
+  exclusion_bug_domains: []                 # domains the source keeps returning despite exclusion — drop on sight.
+                                            # Known class: the source collapses a SUBDOMAIN you pass (tech.example.com)
+                                            # to its registrable root (example.com) before lookup, so the subdomain
+                                            # tenant keeps billing and an unrelated root company vanishes. Listing
+                                            # the tenant here is what protects the store until the vendor fixes it.
 
 limits:
   credit_guard_min: 60                      # TheirStack credits required per enabled pull signal
-  pull_limit_max: 15                        # drop to 8 (then 5) on timeout
+  pull_limit_max: 15                        # drop to 8 (then 5) on timeout — a smaller page shortens the response,
+                                            # but the timeout itself is the description-pattern scan over the
+                                            # posted_at window; fix the window (discovered_at_lookback) first
   cost_per_company_credits: 3
   salesnav_lookups_per_run: 25              # browser research pass: view/search only, human-like pacing; overflow queues

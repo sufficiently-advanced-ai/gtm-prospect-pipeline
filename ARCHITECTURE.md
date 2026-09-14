@@ -145,7 +145,7 @@ code and skills:
 
 | Module | Reads | Writes | Never |
 |---|---|---|---|
-| M1 signal-pull | signal source APIs, `config/signal.yaml`, the store (pull-guard) | `raw/theirstack`, `raw/postings`, new `account.yaml` stubs at `status: pulled`, dedupe list | interprets; touches the CRM; overwrites an existing account |
+| M1 signal-pull | signal source APIs, `config/signal.yaml`, the store (pull-guard), its own last billed pull (`lib/discovered-window.ts` narrows the next query to what the source discovered since then) | `raw/theirstack`, `raw/postings`, new `account.yaml` stubs at `status: pulled`, dedupe lists (fed at zero credits from ids already captured in `raw/` — `lib/list-feed.ts`) | interprets; touches the CRM; overwrites an existing account |
 | M2 triage-route | `raw/`, `config/icp.md`, the four named verification sources (org sweep, leadership page, posting text, browser roster) | `account.yaml` route, verification, evidence_note, raw_pointers; `queue/flags.md`; decision ledger | picks a sequence; guesses on thin evidence; name-only web search for identity |
 | Browser research pass | logged-in Sales Navigator session, `queue/salesnav-pending.md` | `raw/salesnav/`, `verification: SALES_NAV` or a flipped route | any outreach action; more than `limits.salesnav_lookups_per_run` |
 | M3 enrich-enroll | `status: routed` accounts, resolver output, `config/sequences.yaml` caps and suppression | `raw/apollo/<domain>/`, `contacts[]`, `status: enrolled-paused` | enrolls unpaused; touches sequence active state; guesses an email; enrolls a contact active in another sequence |

@@ -23,7 +23,10 @@ that just opened. A referral list. Each signal is a block in one config file. Bi
 sequence and the pipeline picks up the rest.
 
 **Spend that goes to survivors.** Fit triage runs on free data first. Enrichment credits,
-job-text credits, and browser lookups are spent only on accounts that cleared it.
+job-text credits, and browser lookups are spent only on accounts that cleared it. Each
+morning's pull asks the data source only for what it discovered since your last run, and
+the exclusion lists that stop you re-buying known companies are fed from ids you already
+hold, at no cost.
 
 **A second opinion the APIs can't give.** Enrichment data lags reality. Before anything is
 staged, Claude opens Sales Navigator and checks whether the person your pitch assumes is

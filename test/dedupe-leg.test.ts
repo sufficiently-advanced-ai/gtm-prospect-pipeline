@@ -14,7 +14,7 @@ import { mkdtempSync, mkdirSync, writeFileSync, rmSync, utimesSync } from "node:
 import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { buildLeg, parseListSnapshot, configuredListId, type AccountRow } from "../lib/dedupe-leg.ts";
+import { TERMINAL_STATUSES as TERMINAL_LIKE, buildLeg, parseListSnapshot, configuredListId, type AccountRow } from "../lib/dedupe-leg.ts";
 
 const REPO = join(dirname(fileURLToPath(import.meta.url)), "..");
 const CLI = join(REPO, "lib", "dedupe-leg.ts");
@@ -112,6 +112,42 @@ check("merge: a fresh stub seen in the window (status pulled, no verified date) 
 
 check("merge: refuses to run without a signal key", () => {
   assert.throws(() => buildLeg({ mode: "merge", cap: 10, accounts: mergeAccounts, listDomains: new Set(), bugDomains: [] }), /signal-key/);
+});
+
+// --- terminal list --------------------------------------------------------------------------
+check("standard: terminal-listed domains leave not_in_list and sort last in recent_fill", () => {
+  const terminal = new Set(["old-dropped.invalid", "fresh-dropped.invalid"]);
+  const r = buildLeg({ mode: "standard", cap: 350, accounts, listDomains: inList, terminalDomains: terminal, bugDomains: [] });
+  assert.deepEqual(r.domains, [
+    "old-active.invalid",                                   // not in either list
+    "fresh-routed.invalid", "mid-skipped.invalid",          // fill, unlisted first
+    "fresh-dropped.invalid", "old-dropped.invalid",         // fill, terminal-listed last (by mtime)
+  ]);
+  assert.equal(r.tiers.not_in_list, 1);
+});
+
+check("merge: terminal-listed domains sort last inside seen_in_window and terminal_fill (the capless leg carries them)", () => {
+  const terminal = new Set(["seen-dropped.invalid", "unseen-dropped.invalid"]);
+  const r = buildLeg({
+    mode: "merge", cap: 350, accounts: mergeAccounts, listDomains: new Set(), terminalDomains: terminal, bugDomains: [],
+    signalKey: "refresh-signal", today: new Date("2026-09-02T12:00:00Z"),
+  });
+  assert.deepEqual(r.domains, [
+    "seen-active.invalid", "seen-routed.invalid", "seen-dropped.invalid",   // listed terminal AFTER the graduable seen account
+    "verified-held.invalid",
+    "other-signal-only.invalid", "unseen-dropped.invalid",
+  ]);
+  assert.equal(r.tiers.seen_in_window, 3);
+});
+
+check("merge: with a tight cap, terminal-listed domains are the ones that overflow (the capless leg carries them)", () => {
+  const seenTerminal = mergeAccounts.find((a) => a.rawPointers.length && TERMINAL_LIKE.has(a.status))!;
+  const r = buildLeg({
+    mode: "merge", cap: 2, accounts: mergeAccounts, listDomains: new Set(), terminalDomains: new Set([seenTerminal.domain]), bugDomains: [],
+    signalKey: "refresh-signal", today: new Date("2026-09-02T12:00:00Z"),
+  });
+  assert.ok(!r.domains.includes(seenTerminal.domain), `${seenTerminal.domain} should have been pushed past the cap: ${r.domains}`);
+  assert.equal(r.count, 2);
 });
 
 // --- snapshot parsing + list id ----------------------------------------------------------
@@ -215,6 +251,17 @@ check("CLI: merge mode keys on the config-named verified field and this signal's
   assert.equal(j.tiers.recently_verified, 1, "checked.invalid was verified today under the config-named field");
   assert.equal(j.tiers.terminal_fill, 2);
   assert.deepEqual(j.domains, ["bug-example.invalid", "seen.invalid", "checked.invalid", "newdrop.invalid", "oldlive.invalid"]);
+});
+
+check("CLI: --terminal-snapshot (or dedupe.terminal_list_id) moves its members to the back of the leg", () => {
+  const snap = join(root, "raw", "theirstack", "lists", "2026-09-14-777777.json");
+  writeFileSync(snap, JSON.stringify({ companies: [{ domain: "newdrop.invalid", id: "t" }] }));
+  const r = cli(["--json", "--terminal-snapshot", snap]);
+  assert.equal(r.status, 0, r.stderr);
+  const j = JSON.parse(r.stdout);
+  assert.equal(j.terminal_list_domains, 1);
+  assert.equal(j.domains[j.domains.length - 1], "newdrop.invalid");
+  assert.equal(j.tiers.not_in_list, 3, "newdrop left the not_in_list tier");
 });
 
 check("CLI: merge mode without --signal-key fails loudly", () => {
