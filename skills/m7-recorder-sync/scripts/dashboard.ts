@@ -14,6 +14,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import YAML from "yaml";
+import { fixtureBacklog } from "../../../evals/fixture-backlog.ts";
 import { dataPath, listAccounts, readAccount, todayStamp } from "../../../lib/store.ts";
 import { TWENTY_BASE_URL, configPath } from "../../../lib/env.ts";
 import { canonicalSignalKey, resolveSequence, signalNameForKey } from "../../../lib/sequence-resolver.ts";
@@ -116,7 +117,7 @@ const fmtStates = (o: Record<string, number> = {}): string =>
   CONTACT_STATES.filter((s) => o[s]).map((s) => `${s.toLowerCase()}:${o[s]}`).join(" ") || "—";
 
 function terminal(): string {
-  const s = collect(), d = collectDecisions(), r = collectRuns();
+  const s = collect(), d = collectDecisions(), r = collectRuns(), fb = fixtureBacklog();
   const L: string[] = [];
   L.push(`gtm-prospect-pipeline dashboard — ${todayStamp()}`);
   L.push("");
@@ -133,6 +134,7 @@ function terminal(): string {
   L.push("GATES");
   L.push(`  awaiting M4 go: ${s.pausedActive} paused contacts in ACTIVE sequences (${s.pausedFrozen} more are frozen retired-sequence history)`);
   L.push(`  open decisions: ${d.open.length} (${d.gatedAccounts} accounts gated) — node skills/m7-recorder-sync/scripts/decisions.ts list`);
+  L.push(`  eval fixture backlog: ${fb.candidates.length} ruling(s) not yet protected by a fixture (${fb.covered} covered) — node evals/fixture-backlog.ts`);
   for (const [k, v] of Object.entries(d.byKind).sort((a, b) => b[1].count - a[1].count))
     L.push(`    ${k.padEnd(19)} ${String(v.count).padStart(3)} open  oldest ${v.oldest}d`);
   L.push("");
@@ -168,7 +170,7 @@ function terminal(): string {
 const esc = (s: unknown): string => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 function html(): string {
-  const s = collect(), d = collectDecisions(), r = collectRuns();
+  const s = collect(), d = collectDecisions(), r = collectRuns(), fb = fixtureBacklog();
   const tile = (label: string, value: string, note = "", tone = "") =>
     `<div class="tile ${tone}"><div class="v">${esc(value)}</div><div class="l">${esc(label)}</div>${note ? `<div class="n">${esc(note)}</div>` : ""}</div>`;
   const stateCells = (t: Record<string, number> = {}) => CONTACT_STATES.map((cs) => `<td class="num">${t[cs] ?? ""}</td>`).join("");
@@ -229,6 +231,7 @@ td.muted { color:var(--ink3); white-space:normal } thead th { border-top:0; colo
 ${tile("lifetime replies", String(s.replied), `${s.contactsTotal} contacts; open-tracking off — replies are the only engagement signal`, s.replied === 0 ? "alert" : "accent")}
 ${tile("awaiting M4 go", String(s.pausedActive), `paused in ACTIVE sequences (+${s.pausedFrozen} frozen retired history)`, "accent")}
 ${tile("open decisions", String(d.open.length), `${d.gatedAccounts} accounts gated · oldest ${Math.max(0, ...Object.values(d.byKind).map((k) => k.oldest))}d`, d.open.length ? "warn" : "")}
+${tile("eval fixture backlog", String(fb.candidates.length), `${fb.covered} rulings protected · node evals/fixture-backlog.ts`, fb.candidates.length ? "warn" : "")}
 ${tile("HOLD pile", String(sum(Object.fromEntries(Object.entries(s.holds).map(([k, v]) => [k, v.count])))), "releases on successor activation", "warn")}
 ${tile("enroll-ready", String(s.enrollReady.length), "resolver ENROLL, awaiting next M3", "")}
 ${tile("last run", r.last ? `${r.lastAgeDays}d ago` : "—", r.last ? `${String(r.last.run_date).slice(0, 10)} ${r.last.mode}${r.last.degraded ? " · DEGRADED" : ""} · streak ${r.streak}` : "no run records", noRecentRun || r.streak > 0 ? "alert" : "")}

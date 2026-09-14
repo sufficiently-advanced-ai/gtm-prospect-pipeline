@@ -32,9 +32,9 @@ missing was hired last month. View and search only, capped, paced, captured.
 **A CRM that stays true.** The flat-file store is the record; the CRM is a mirror. Push is
 idempotent. Drops never reach the CRM. Suppression decisions always do.
 
-**Judgment that does not drift.** The qualification rules are prompts, and prompts get
-edited. A regression suite scores the live rules against frozen decisions before any edit
-lands, so a lesson you already paid for cannot be un-learned by a wording change.
+**Judgment that gets better, not just bigger.** Every call you correct becomes a regression
+test, drafted for you from the captured evidence. Edit the rules all you like; a lesson you
+already paid for cannot be un-learned. See [the flywheel](#the-flywheel-every-correction-becomes-a-test).
 
 ## Setup is a conversation
 
@@ -117,13 +117,37 @@ behind the bigger choices is in [docs/decisions](docs/decisions).
 | M8 `crm-sync` | Push, reconcile, audit the CRM mirror. |
 | `/pipeline-batch` | The orchestrator. Thin by design. |
 
-## Evals
+## The flywheel: every correction becomes a test
 
-The qualifying modules are prompt-driven, so `evals/` holds frozen decisions with a gold
-answer and a named wrong answer that once happened. `node evals/run.ts` scores the live rules
-against them, live or replayed at $0, and `scripts/check-evals.sh` gates every edit to a
-skill or config file. The fixtures shipped here are synthetic; replace them with your own
-corrected decisions in a private fork.
+The qualifying modules are prompt-driven. Their behaviour is the text of a skill file plus
+your ICP, and text gets edited. Most teams discover a regression the expensive way: a rule
+that was true in March gets reworded in June and the same bad account comes back. This
+pipeline closes that loop mechanically.
+
+<img src="docs/img/flywheel.svg" alt="Six-step loop: the batch judges, you correct a call, the next run applies the ruling and lists it as fixture backlog, a fixture is drafted from the raw captures, you confirm the gold and name the trap, and every future edit is gated by check-evals.sh." width="100%">
+
+1. **You correct a call** from the dashboard or the CLI. The ruling is stored verbatim in the
+   decision ledger, tied to the account.
+2. **The next run applies it** and lists it in the fixture backlog. The dashboard shows the
+   count; the recorder drafts the backlog at the end of every batch.
+3. **The fixture is drafted from the raw captures**, with the gold pre-filled from the
+   corrected account and your ruling quoted at the top of its notes. It never labels on its
+   own.
+4. **You finish it in two minutes**: confirm the gold, write down the wrong answer that
+   actually happened. That wrong answer becomes a `forbidden` value: if it ever comes back,
+   the whole run fails.
+5. **Every future edit is gated.** `check-evals.sh` runs before any change to a skill or the
+   ICP lands, replaying committed model responses at no cost. A wording change that would
+   re-make the mistake fails on that fixture before it ships.
+
+Over a few months the suite becomes the record of your team's judgment: what a fit is,
+what a disqualifier looks like, which scope-versus-title calls went which way. It survives
+staff changes and prompt rewrites, and it's the artifact a new hire reads to learn how you
+sell.
+
+Run it live with `node evals/run.ts --task all` when you want the model, not the replay,
+scored against the fixtures. The fixtures shipped here are synthetic; your own start
+accumulating from your first correction.
 
 ## License
 

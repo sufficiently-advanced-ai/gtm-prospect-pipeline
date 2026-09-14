@@ -227,6 +227,8 @@ function validateFixtureDoc(
       p.push("provenance.source is required (where the gold outcome is recorded)");
     if (prov.incident_date !== undefined && typeof prov.incident_date !== "string")
       p.push("provenance.incident_date must be a quoted ISO date string");
+    if (prov.decision_id !== undefined && (typeof prov.decision_id !== "string" || !prov.decision_id.trim()))
+      p.push("provenance.decision_id, when present, is the ledger id the fixture protects (non-empty string)");
   }
 
   // ----- inputs

@@ -53,6 +53,14 @@ account state, Apollo, or sequences.
    entry, never replace it (prose-only "pending" lines can never be drained). Close with
    `decisions.ts report` and include its open-count line in the digest. `add` is append-safe
    from any session; `resolve` rewrites the file — one resolving session at a time.
+   **Then close the flywheel:** `node evals/fixture-backlog.ts` lists every resolved
+   judgment ruling (re-triage, policy-ruling, data-bug) that names an account and has no
+   eval fixture yet. For each line, run the printed
+   `node evals/draft-fixture.ts <domain> --task <task> --decision <id>` now — it stages the
+   fixture from the account's raw captures with the ruling cited by id and quoted verbatim in
+   notes. The operator finishes it (confirms the gold, names the forbidden trap, promotes it
+   into `cases/`, rewrites the baseline). A ruling that never becomes a fixture is a lesson
+   the next skill edit can silently undo; report the backlog count in the digest.
 6. **Dashboard regeneration — LAST step, after the run-record append** (it reads
    run-records.jsonl and must include this run):
    `node skills/m7-recorder-sync/scripts/dashboard.ts --html` → terminal summary +

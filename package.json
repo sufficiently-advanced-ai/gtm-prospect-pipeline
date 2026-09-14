@@ -6,7 +6,7 @@
   "type": "module",
   "engines": { "node": ">=24" },
   "scripts": {
-    "test": "node test/smoke.ts && node test/store-lint.test.ts && node test/evals-harness.test.ts && node test/draft-fixture.test.ts && node test/m7-scripts.test.ts && node test/decisions.test.ts && node test/dashboard.test.ts && node test/dashboard-server.test.ts && node test/pull-guard.test.ts && node test/dedupe-leg.test.ts && node test/runners-m2.test.ts && node test/runners-verdict-synthesis.test.ts",
+    "test": "node test/smoke.ts && node test/store-lint.test.ts && node test/evals-harness.test.ts && node test/draft-fixture.test.ts && node test/m7-scripts.test.ts && node test/decisions.test.ts && node test/dashboard.test.ts && node test/dashboard-server.test.ts && node test/pull-guard.test.ts && node test/dedupe-leg.test.ts && node test/runners-m2.test.ts && node test/runners-verdict-synthesis.test.ts && node test/fixture-backlog.test.ts",
     "doctor": "node scripts/setup-check.ts",
     "validate": "node lib/sequence-resolver.ts --validate",
     "store-lint": "node lib/store-lint.ts",

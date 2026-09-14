@@ -153,27 +153,40 @@ never asked.**
 replays can detect. Full live confirmation happens in deliberate live runs
 (`node evals/run.ts --task all`), not per edit.
 
-## Adding a fixture from a real decision (the flywheel)
+## The flywheel — a ruling becomes a fixture, mechanically
 
-1. Something went wrong live and was corrected: a route flipped, a drop reversed, a
-   synthesis invented an owner. The corrected state is in `account.yaml`; the inputs are in
-   `raw/`.
-2. `node evals/draft-fixture.ts <domain> [--task <task>]` scaffolds into
-   `fixtures/staging/<id>/` from the account's `raw_pointers`, with gold pre-filled from the
-   corrected account and every prefill explained in `notes`. It excerpts, trims and redacts
-   mechanically; it never labels.
-3. A human confirms the gold and writes the `forbidden` trap — the specific wrong answer that
-   happened. Read `.review.md` in the staged dir: it lists everything deleted and every
-   BLOCKER (a conclusion the stripper refused to delete because it carried the only statement
-   of the evidence).
-4. Move the dir into `fixtures/cases/<task>/`, run the suite live once to record replays, and
-   `node evals/run.ts --task all --baseline`. Adding a fixture is a deliberate baseline change.
+The suite only pays off if every correction the operator makes ends up protected by a
+fixture. That path has no manual "remember to" step:
 
-Excerpting rules (enforced by the loader and the scaffolder; full text in SCHEMA.md):
-≤50KB per input, ≤200KB per fixture; **no emails, no phone numbers, no contact or sequence
-ids** (names + titles are the evidence; contact details never are); no gold leakage — the
-inputs must not contain the decision, the correction, or text written after the decision.
-Trimming deletes, never paraphrases.
+1. **A batch runs and judges.** M2 routes, M5 synthesizes. Every call is written to
+   `account.yaml` with its raw pointers.
+2. **The operator corrects a call** — a dashboard button or
+   `decisions.ts resolve <id> --ruling "…" --verdict <v>`. The ruling is stored verbatim in
+   `queue/decisions.jsonl` with the account it is about.
+3. **The next run executes the ruling** (orchestrator run-start step 5) — the account flips,
+   the ruling is quoted as the authority in its evidence trail.
+4. **The same run lists the ruling as fixture backlog.** `node evals/fixture-backlog.ts`
+   reads the ledger, finds every resolved judgment ruling that names an account and has no
+   fixture citing it (`provenance.decision_id`) or its domain, and prints the draft command.
+   M7 runs it at the end of every batch; the orchestrator reports the count at run start; the
+   dashboard shows it as a tile.
+5. **The fixture is drafted from the raw captures.**
+   `node evals/draft-fixture.ts <domain> --task <task> --decision <id>` scaffolds into
+   `fixtures/staging/<id>/` — inputs excerpted and redacted from `raw_pointers`, gold
+   pre-filled from the corrected `account.yaml`, `provenance.decision_id` set, the ruling
+   quoted verbatim at the top of `notes`. It never labels; every prefill is explained.
+6. **A human finishes it.** Confirm the gold, write the `forbidden` trap — the specific wrong
+   answer that happened — read `.review.md` for anything the stripper refused to delete,
+   move the dir into `fixtures/cases/<task>/`, run the suite live once to record replays,
+   and `node evals/run.ts --task all --baseline`. Adding a fixture is a deliberate baseline
+   change.
+7. **Every future edit is gated.** `bash scripts/check-evals.sh` runs before any change to a
+   `SKILL.md`, `config/icp.md`, `config/signal.yaml` or `config/sequences.yaml` lands. A
+   wording change that would re-make the corrected mistake fails on that fixture's
+   `forbidden` value, at $0, before it ships.
+
+Append the ruling to `config/icp.md` "## Rulings log" with the fixture id, so the prose and
+the test point at each other.
 
 ## Shipped corpus is synthetic — replace it
 

@@ -15,7 +15,8 @@ description: >-
 3. On a scheduled host: `git pull --ff-only` in the repo first.
 4. `node skills/m7-recorder-sync/scripts/decisions.ts list` — surface open decisions
    touching this run's work (blocked enrollments, pending rulings); then scan `queue/` for
-   anything not yet in the ledger.
+   anything not yet in the ledger. `node evals/fixture-backlog.ts --count` — report the
+   number of rulings not yet protected by an eval fixture (M7 drafts them at run end).
 5. **Execute recorded verdicts:** `node skills/m7-recorder-sync/scripts/decisions.ts verdicts`
    — each line is an operator ruling (dashboard or CLI) the store doesn't reflect yet. Apply
    the flip per account (`setStatus()` from lib/store.ts; skip→skipped, drop→dropped,

@@ -34,7 +34,9 @@ description: >-
   read as the owner of the function — scope, not title string, is the test.
 provenance:
   domain: northwind-logistics.example
-  source: "progress log <date> CORRECTIONS, item 1"
+  source: "decision ledger d-2026-02-05-northwind-scope"
+  decision_id: d-2026-02-05-northwind-scope   # optional: the ledger ruling this fixture protects;
+                                              # evals/fixture-backlog.ts counts it as covered
   incident_date: "2026-02-05"
 inputs:
   - path: inputs/apollo-sweep.json

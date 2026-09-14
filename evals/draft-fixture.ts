@@ -5,7 +5,7 @@
 // where judgment starts: the human confirms the gold and writes the `forbidden` trap
 // (see evals/fixtures/SCHEMA.md §"Staging → committed workflow"). Scaffold, never label.
 //
-// Usage:  node evals/draft-fixture.ts <domain> [--task <task>] [--id <id>] [--force]
+// Usage:  node evals/draft-fixture.ts <domain> [--task <task>] [--id <id>] [--decision <ledger-id>] [--force]
 //
 // Hard invariants:
 //   - $PIPELINE_DATA is READ-ONLY here. Nothing under evals/ ever writes the store.
@@ -872,7 +872,7 @@ function writeSidecar(dir: string, args: {
 // ---------------------------------------------------------------------------
 // Scaffold one task
 // ---------------------------------------------------------------------------
-function scaffold(task: string, ctx: Ctx, explicitId: string | undefined, force: boolean): string {
+function scaffold(task: string, ctx: Ctx, explicitId: string | undefined, force: boolean, decision?: LedgerRuling): string {
   const id = explicitId ?? `${slugify(task)}_${slugify(ctx.domain)}`;
   if (!/^[a-z0-9_]+$/.test(id)) throw new Error(`id must match ^[a-z0-9_]+$: ${id}`);
   const dir = stagingPath(id);
@@ -910,8 +910,9 @@ function scaffold(task: string, ctx: Ctx, explicitId: string | undefined, force:
     description: `TODO: what this fixture stresses and the trap it encodes (${ctx.domain}, ${task}).`,
     provenance: {
       domain: ctx.domain,
-      source: "TODO: progress-log/registry line recording the corrected outcome",
-      ...(incident ? { incident_date: String(incident) } : {}),
+      source: decision ? `decision ledger ${decision.id}` : "TODO: progress-log/registry line recording the corrected outcome",
+      ...(decision ? { decision_id: decision.id } : {}),
+      ...(incident ? { incident_date: String(incident) } : decision?.date ? { incident_date: decision.date } : {}),
     },
     inputs: staged.filter((s) => !s.oversize).map((s) => ({ path: `inputs/${s.name}`, role: s.role })),
   };
@@ -921,6 +922,7 @@ function scaffold(task: string, ctx: Ctx, explicitId: string | undefined, force:
     should: [{ id: "TODO_2", text: "TODO: a quality statement worth reporting but not gating" }],
   };
   fixture.forbidden = [];
+  if (decision) notes.unshift(`RULING (verbatim, ledger ${decision.id}, ${decision.date}${decision.verdict ? `, verdict ${decision.verdict}` : ""}): ${decision.ruling}`);
   fixture.notes = notes.join("\n") + (blockers.length ? "\n\nBLOCKERS:\n" + blockers.map((b) => `- ${b}`).join("\n") : "");
 
   writeFixtureYaml(dir, fixture, {
@@ -956,6 +958,32 @@ function scaffold(task: string, ctx: Ctx, explicitId: string | undefined, force:
 }
 
 // ---------------------------------------------------------------------------
+// Ledger ruling → provenance (the flywheel: a ruling becomes a fixture, cited by id)
+// ---------------------------------------------------------------------------
+type LedgerRuling = { id: string; date: string; ruling: string; verdict?: string; accounts?: string[]; subject?: string[] };
+
+function readLedgerRuling(id: string): LedgerRuling | undefined {
+  const p = dataPath("queue", "decisions.jsonl");
+  if (!existsSync(p)) return undefined;
+  for (const line of readFileSync(p, "utf8").split("\n")) {
+    if (!line.trim()) continue;
+    let e: any;
+    try { e = JSON.parse(line); } catch { continue; }
+    if (e?.id !== id || e?.status !== "resolved") continue;
+    const ruling = String(e?.resolution?.ruling ?? "").trim();
+    if (!ruling) return undefined;
+    return {
+      id, ruling,
+      date: String(e?.resolution?.date ?? ""),
+      verdict: typeof e?.resolution?.verdict === "string" ? e.resolution.verdict : undefined,
+      accounts: Array.isArray(e.accounts) ? e.accounts.map(String) : [],
+      subject: Array.isArray(e.subject) ? e.subject.map(String) : [],
+    };
+  }
+  return undefined;
+}
+
+// ---------------------------------------------------------------------------
 // CLI
 // ---------------------------------------------------------------------------
 function main(argv: string[]): number {
@@ -964,10 +992,12 @@ function main(argv: string[]): number {
   let task: string | undefined;
   let id: string | undefined;
   let force = false;
+  let decisionId: string | undefined;
   for (let i = 0; i < args.length; i++) {
     const a = args[i];
     if (a === "--task") task = args[++i];
     else if (a === "--id") id = args[++i];
+    else if (a === "--decision") decisionId = args[++i];
     else if (a === "--force") force = true;
     else if (a === "--help" || a === "-h") { usage(); return 0; }
     else if (a.startsWith("-")) { console.error(`unknown flag: ${a}`); usage(); return 1; }
@@ -982,6 +1012,15 @@ function main(argv: string[]): number {
 
   const account = readAccount(domain);
   if (!account) { console.error(`no account.yaml for ${domain} under ${PIPELINE_DATA}/accounts/`); return 1; }
+
+  let decision: LedgerRuling | undefined;
+  if (decisionId) {
+    decision = readLedgerRuling(decisionId);
+    if (!decision) { console.error(`--decision ${decisionId}: no RESOLVED entry with a ruling in ${dataPath("queue", "decisions.jsonl")}`); return 1; }
+    const named = [...(decision.accounts ?? []), ...(decision.subject ?? [])].map((d) => d.toLowerCase().replace(/^www\./, ""));
+    if (!named.includes(domain.toLowerCase().replace(/^www\./, "")))
+      console.log(`  ! ledger ${decisionId} does not name ${domain} (names: ${named.join(", ") || "none"}) — provenance will still cite it; check that this is the right account`);
+  }
 
   const pointers = (Array.isArray(account.raw_pointers) ? account.raw_pointers : []).map(String).map(classify);
   const missing = pointers.filter((p) => !p.exists);
@@ -1002,12 +1041,12 @@ function main(argv: string[]): number {
 
   let failures = 0;
   for (const t of tasks) {
-    try { scaffold(t, ctx, id, force); }
+    try { scaffold(t, ctx, id, force, decision); }
     catch (e: any) { failures++; console.error(`  FAILED ${t}: ${e.message}`); }
   }
   if (failures) return 1;
   console.log(`\nDrafts in evals/fixtures/staging/ — NOT loaded by the harness.`);
-  console.log(`Next: confirm the gold, write the forbidden trap, fill provenance.source (see each .review.md),`);
+  console.log(`Next: confirm the gold, write the forbidden trap${decision ? "" : ", fill provenance.source"} (see each .review.md),`);
   console.log(`then move into evals/fixtures/cases/<task>/ and rewrite the baseline.`);
   return 0;
 }
@@ -1016,6 +1055,8 @@ function usage(): void {
   console.error(`usage: node evals/draft-fixture.ts <domain> [--task <task>] [--id <id>] [--force]
 
   <domain>   an account under $PIPELINE_DATA/accounts/ (read-only)
+  --decision a RESOLVED decision-ledger id: cites it in provenance.decision_id, copies the
+             ruling verbatim into notes (from evals/fixture-backlog.ts output)
   --task     one of: ${TASKS.join(", ")}
              omitted → every task the account's captures support, each into its own staging dir
   --id       fixture id (^[a-z0-9_]+$); only with a single task. default: <task>_<domain-slug>
