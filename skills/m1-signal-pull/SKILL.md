@@ -49,7 +49,11 @@ M2 applies those labels from evidence. Signals with `preflight_free_count: true`
    seen --ids` emits the source's company ids you already hold (every capture carries them)
    for store accounts the snapshot lacks → one `add_companies_to_list` call. Accounts with
    no id anywhere in raw (other connectors, manual sourcing) are what the domain leg is for.
-   Do not exceed the cap, but know what it is: a payload-size courtesy, not a failure
+   Same for the terminal list when `dedupe.terminal_list_id` is set: `node lib/list-feed.ts
+   --list terminal --ids` → `add_companies_to_list` on that id, then write
+   `<date>-<terminal_list_id>.json` (compact shape: previous snapshot ∪ the fed set, once the
+   returned `companies_count` equals that union's size). Accounts turn terminal every run, so
+   an unfed terminal list silently stops covering them. Do not exceed the cap, but know what it is: a payload-size courtesy, not a failure
    boundary — long legs never failed a search in the vendor's own request log; what times
    out is a description pattern over a wide posted_at window (step 3). Tier overflow on
    stderr means "feed the lists", never "raise the cap".
